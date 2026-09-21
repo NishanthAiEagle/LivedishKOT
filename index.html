@@ -3,17 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#070505">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>The Spice Bistro — Haute Cuisine Table Service</title>
-
-<!-- Fonts -->
+<title>The Spice Bistro — Table Ordering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- Tailwind CSS -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -21,394 +14,316 @@
       extend: {
         colors: {
           bistro: {
-            bg: '#070505',
-            card: '#120d0e',
-            elevated: '#1a1315',
-            sheet: '#140e10',
-            border: 'rgba(235, 203, 138, 0.14)',
-            borderMuted: 'rgba(244, 236, 225, 0.08)',
-            gold: '#d4af37',
-            goldHi: '#f6e4b8',
-            goldPale: 'rgba(212, 175, 55, 0.15)',
-            maroon: '#681c29',
-            maroonDeep: '#3e0e17',
-            ink: '#fbf7ee',
-            inkSoft: 'rgba(251, 247, 238, 0.72)',
-            inkMuted: 'rgba(251, 247, 238, 0.44)',
-            veg: '#2ecc71',
-            nonVeg: '#e74c3c'
+            bg: '#0d0908',
+            card: '#160f10',
+            elevated: '#211618',
+            border: 'rgba(244, 236, 225, 0.12)',
+            gold: '#d8b26a',
+            goldHi: '#f0d8a4',
+            maroon: '#7a2231',
+            maroonDeep: '#4e141f',
+            veg: '#22c55e',
+            nonVeg: '#ef4444',
+            ink: '#f4ece1',
+            inkSoft: 'rgba(244, 236, 225, 0.68)',
+            inkMuted: 'rgba(244, 236, 225, 0.42)'
           }
         },
         fontFamily: {
           serif: ['"Cormorant Garamond"', 'serif'],
-          cinzel: ['"Cinzel"', 'serif'],
           sans: ['"Plus Jakarta Sans"', 'sans-serif'],
           mono: ['"JetBrains Mono"', 'monospace']
-        },
-        boxShadow: {
-          'gold-glow': '0 0 25px -4px rgba(212, 175, 55, 0.3)',
-          'gold-subtle': '0 4px 20px -2px rgba(212, 175, 55, 0.15)',
-          'bottom-dock': '0 -8px 30px rgba(0, 0, 0, 0.85)'
         }
       }
     }
   }
 </script>
-
 <style>
-  * {
-    -webkit-tap-highlight-color: transparent;
-    box-sizing: border-box;
-  }
+  * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
   body {
-    background-color: #070505;
-    color: #fbf7ee;
+    background: #0d0908;
+    color: #f4ece1;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    user-select: none;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
   }
-  
-  /* CRITICAL FIX: Ensure inputs are always editable, clickable and focusable */
-  input, textarea, select {
-    user-select: text !important;
-    -webkit-user-select: text !important;
-    touch-action: auto !important;
-    pointer-events: auto !important;
-  }
-
-  button {
-    touch-action: manipulation;
-    cursor: pointer;
-  }
-
   .hide-scroll::-webkit-scrollbar { display: none; }
   .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-
-  /* Native Bottom Sheet Animation Curves */
-  .sheet-backdrop {
-    transition: opacity 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+  .ambient-glow {
+    background: radial-gradient(circle at 50% -20%, rgba(122, 34, 49, 0.45) 0%, rgba(216, 178, 106, 0.15) 40%, transparent 75%);
   }
-  .sheet-drawer {
-    transition: transform 0.36s cubic-bezier(0.32, 0.72, 0, 1);
-  }
-  .sheet-open .sheet-backdrop {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .sheet-open .sheet-drawer {
-    transform: translateY(0);
-  }
-  .sheet-closed .sheet-backdrop {
-    opacity: 0;
-    pointer-events: none;
-  }
-  .sheet-closed .sheet-drawer {
-    transform: translateY(100%);
+  .modal-enter { animation: modalSlide 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  @keyframes modalSlide {
+    from { opacity: 0; transform: translateY(100%); }
+    to { opacity: 1; transform: translateY(0); }
   }
 </style>
 </head>
-<body class="min-h-screen bg-bistro-bg flex justify-center pb-28">
+<body class="min-h-screen bg-bistro-bg flex justify-center pb-24">
 
-  <!-- Mobile Screen Shell -->
-  <div class="w-full max-w-md min-h-screen flex flex-col relative bg-bistro-bg shadow-2xl overflow-x-hidden border-x border-bistro-borderMuted">
+  <!-- Mobile Container Wrapper -->
+  <div class="w-full max-w-md min-h-screen flex flex-col relative bg-bistro-bg shadow-2xl overflow-x-hidden border-x border-bistro-border/30">
 
-    <!-- Ambient Lighting Header Canvas -->
-    <div class="absolute top-0 left-0 right-0 h-80 bg-gradient-to-b from-bistro-maroonDeep/40 via-bistro-goldPale/10 to-transparent pointer-events-none z-0"></div>
+    <!-- Ambient Glow Layer -->
+    <div class="ambient-glow absolute top-0 left-0 right-0 h-96 pointer-events-none z-0"></div>
 
-    <!-- Sticky Native Top Nav -->
-    <header class="sticky top-0 z-30 bg-bistro-bg/85 backdrop-blur-xl border-b border-bistro-border/40 px-4 pt-3 pb-3 flex items-center justify-between">
+    <!-- Top Sticky Header -->
+    <header class="sticky top-0 z-30 bg-bistro-bg/85 backdrop-blur-xl border-b border-bistro-border/40 px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-full border border-bistro-gold/40 bg-gradient-to-br from-bistro-maroon to-bistro-bg flex items-center justify-center font-cinzel text-bistro-goldHi text-sm font-bold shadow-gold-subtle">
-          SB
+        <div class="w-9 h-9 rounded-full border border-bistro-gold/40 bg-bistro-maroon/30 flex items-center justify-center font-serif text-bistro-gold text-lg font-bold">
+          S
         </div>
         <div>
-          <div class="flex items-center gap-1.5">
-            <h1 class="text-xs font-cinzel tracking-widest text-bistro-goldHi uppercase font-bold">The Spice Bistro</h1>
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          </div>
-          <p id="topTableLabel" class="text-[10px] font-mono text-bistro-inkMuted">Table T-04 · Royal Alcove</p>
+          <h1 class="text-sm font-semibold tracking-wide text-bistro-goldHi uppercase flex items-center gap-1.5 font-serif">
+            The Spice Bistro
+          </h1>
+          <p id="tableBadge" class="text-[11px] font-mono text-bistro-inkMuted">Table -- · Dine In</p>
         </div>
       </div>
 
       <div class="flex items-center gap-2">
-        <!-- Discreet Butler Summoner -->
-        <button onclick="openButlerSheet()" class="p-2 rounded-xl bg-bistro-elevated border border-bistro-border/60 text-bistro-gold text-xs flex items-center gap-1 active:scale-95 transition-transform" aria-label="Call Butler">
-          <svg class="w-4 h-4 text-bistro-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-          <span class="text-[10px] font-mono tracking-tight font-medium text-bistro-inkSoft">Butler</span>
+        <!-- Call Waiter Button -->
+        <button onclick="callServer()" class="p-2 rounded-xl bg-bistro-elevated border border-bistro-border text-xs text-bistro-gold flex items-center gap-1 active:scale-95 transition-transform" title="Call Waiter">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <span class="hidden sm:inline text-[11px]">Server</span>
         </button>
 
-        <!-- Live Kitchen Pacing Indicator -->
-        <button id="topRunningTabBadge" onclick="openPacingSheet()" class="hidden px-2.5 py-1.5 rounded-xl bg-bistro-maroon/60 border border-bistro-gold/40 text-[10px] font-mono text-bistro-goldHi flex items-center gap-1.5 active:scale-95 transition-transform">
+        <!-- View Running Order (If Placed) -->
+        <button id="runningOrderBtn" onclick="toggleRunningTab(true)" class="hidden px-2.5 py-1.5 rounded-xl bg-bistro-maroon/50 border border-bistro-gold/40 text-[11px] text-bistro-goldHi font-medium flex items-center gap-1 active:scale-95">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Tab #1 Active</span>
+          Running Tab
         </button>
       </div>
     </header>
 
-    <!-- STEP 0: ONBOARDING SCREEN -->
-    <div id="onboardingScreen" class="fixed inset-0 z-50 bg-bistro-bg flex flex-col justify-center px-6 max-w-md mx-auto pointer-events-auto">
-      <div class="text-center mb-7 relative z-10">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-bistro-gold/40 text-[10px] font-mono tracking-widest text-bistro-gold uppercase mb-3 bg-bistro-goldPale">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Dine-In Concierge
+    <!-- STEP 1: GUEST REGISTRATION OVERLAY (If not onboarded) -->
+    <div id="onboardingScreen" class="fixed inset-0 z-50 bg-bistro-bg flex flex-col justify-center px-6 max-w-md mx-auto">
+      <div class="ambient-glow absolute inset-0 pointer-events-none"></div>
+      
+      <div class="relative z-10 text-center mb-8">
+        <span class="inline-block px-3 py-1 rounded-full border border-bistro-gold/40 text-[11px] font-mono tracking-widest text-bistro-gold uppercase mb-3 bg-bistro-gold/10">
+          Digital Table Service
         </span>
-        <h2 class="font-serif text-3xl font-semibold text-bistro-goldHi mb-1.5">The Spice Bistro</h2>
+        <h2 class="font-serif text-3xl font-semibold text-bistro-goldHi mb-2">Welcome to Dining</h2>
         <p class="text-xs text-bistro-inkSoft leading-relaxed max-w-xs mx-auto">
-          Haute Indian Gastronomy & Charcoal Tandoor. Connect to Table T-04 to begin your culinary journey.
+          Please enter your details to browse our contactless menu and dispatch orders directly to the kitchen.
         </p>
       </div>
 
-      <form onsubmit="handleSessionSubmit(event)" class="relative z-10 space-y-4 bg-bistro-card border border-bistro-border p-5 rounded-3xl shadow-2xl backdrop-blur-xl">
+      <div class="relative z-10 space-y-4 bg-bistro-card border border-bistro-border/60 p-5 rounded-2xl shadow-xl">
         <div>
-          <label for="inputTable" class="block text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Detected Table</label>
+          <label class="block text-[11px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Assigned Table</label>
           <div class="relative">
-            <input type="text" id="inputTable" value="T-04" class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-4 py-3 text-xs text-bistro-gold font-mono font-medium focus:border-bistro-gold outline-none relative z-20">
-            <span class="absolute right-3.5 top-3.5 text-[9px] text-emerald-400 font-mono tracking-wide pointer-events-none z-30">AUTO-SYNCED</span>
+            <input type="text" id="inputTable" value="T-04" class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-4 py-2.5 text-sm text-bistro-gold font-mono font-medium focus:border-bistro-gold outline-none" placeholder="e.g. T-04">
+            <span class="absolute right-3.5 top-3 text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> QR DETECTED
+            </span>
           </div>
         </div>
 
         <div>
-          <label for="inputName" class="block text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Lead Guest Name</label>
-          <input type="text" id="inputName" placeholder="e.g. Vikramaditya" required class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-4 py-3 text-xs text-bistro-ink placeholder:text-bistro-inkMuted/60 focus:border-bistro-gold outline-none relative z-20">
+          <label class="block text-[11px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Your Full Name</label>
+          <input type="text" id="inputName" placeholder="e.g. Rajesh Kumar" class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-4 py-2.5 text-sm text-bistro-ink placeholder:text-bistro-inkMuted/60 focus:border-bistro-gold outline-none">
         </div>
 
         <div>
-          <label for="inputPhone" class="block text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Mobile Phone (WhatsApp Bill)</label>
-          <input type="tel" id="inputPhone" placeholder="10-digit mobile number" class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-4 py-3 text-xs text-bistro-ink placeholder:text-bistro-inkMuted/60 focus:border-bistro-gold outline-none relative z-20">
+          <label class="block text-[11px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Mobile Phone Number</label>
+          <input type="tel" id="inputPhone" placeholder="10-digit number for digital bill" class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-4 py-2.5 text-sm text-bistro-ink placeholder:text-bistro-inkMuted/60 focus:border-bistro-gold outline-none">
         </div>
 
-        <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-bistro-gold to-[#aa8018] text-[#120b09] font-semibold text-xs tracking-wider uppercase shadow-gold-glow active:scale-98 transition-transform mt-2 relative z-20">
-          Open Digital Carte du Jour →
+        <button onclick="startSession()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-bistro-gold to-[#c79b50] text-[#120b09] font-semibold text-sm tracking-wide shadow-lg shadow-bistro-gold/20 active:scale-98 transition-transform mt-2">
+          Open Digital Menu →
         </button>
-      </form>
-      <p class="text-center text-[10px] text-bistro-inkMuted font-mono mt-6">Instant KOT dispatch · Zero app installation required</p>
+      </div>
+
+      <div class="relative z-10 text-center mt-6">
+        <p class="text-[11px] text-bistro-inkMuted">Pure hospitality · Direct KOT Kitchen Dispatch</p>
+      </div>
     </div>
 
-    <!-- MAIN APP CONTENT -->
+    <!-- MAIN APP CONTENT (Menu & Ordering) -->
     <main id="mainApp" class="flex-1 flex flex-col relative z-10">
 
-      <!-- Course & Category Nav Scroller -->
-      <nav class="sticky top-[57px] z-20 bg-bistro-bg/95 backdrop-blur-md border-b border-bistro-borderMuted px-3 py-2 flex items-center gap-2 overflow-x-auto hide-scroll">
-        <button onclick="setCategory('all')" class="cat-pill active px-3 py-1.5 rounded-full text-[11px] font-mono whitespace-nowrap bg-bistro-gold text-[#0d0708] font-semibold transition-all">All Creations</button>
-        <button onclick="setCategory('starters')" class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-mono whitespace-nowrap bg-bistro-card border border-bistro-borderMuted text-bistro-inkSoft hover:text-bistro-ink transition-all">Course I: Amuse</button>
-        <button onclick="setCategory('tandoor')" class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-mono whitespace-nowrap bg-bistro-card border border-bistro-borderMuted text-bistro-inkSoft hover:text-bistro-ink transition-all">Sigri & Clay Oven</button>
-        <button onclick="setCategory('curry')" class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-mono whitespace-nowrap bg-bistro-card border border-bistro-borderMuted text-bistro-inkSoft hover:text-bistro-ink transition-all">Course II: Gravies</button>
-        <button onclick="setCategory('biryani')" class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-mono whitespace-nowrap bg-bistro-card border border-bistro-borderMuted text-bistro-inkSoft hover:text-bistro-ink transition-all">Dum Biryani & Naan</button>
-        <button onclick="setCategory('digestifs')" class="cat-pill px-3 py-1.5 rounded-full text-[11px] font-mono whitespace-nowrap bg-bistro-card border border-bistro-borderMuted text-bistro-inkSoft hover:text-bistro-ink transition-all">Course III: Mithai</button>
+      <!-- Category Navigation Bar (Sticky Horizontal Scroll) -->
+      <nav class="sticky top-[57px] z-20 bg-bistro-bg/95 backdrop-blur-md border-b border-bistro-border/30 px-3 py-2.5 flex items-center gap-2 overflow-x-auto hide-scroll">
+        <button onclick="filterCategory('all')" class="cat-pill active px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-bistro-gold text-[#120b09] transition-all">All Dishes</button>
+        <button onclick="filterCategory('starters')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-bistro-card border border-bistro-border text-bistro-inkSoft hover:text-bistro-ink transition-all">Starters</button>
+        <button onclick="filterCategory('tandoor')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-bistro-card border border-bistro-border text-bistro-inkSoft hover:text-bistro-ink transition-all">Tandoor & Kebab</button>
+        <button onclick="filterCategory('curry')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-bistro-card border border-bistro-border text-bistro-inkSoft hover:text-bistro-ink transition-all">Royal Curries</button>
+        <button onclick="filterCategory('biryani')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-bistro-card border border-bistro-border text-bistro-inkSoft hover:text-bistro-ink transition-all">Dum Biryani & Breads</button>
+        <button onclick="filterCategory('drinks')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-bistro-card border border-bistro-border text-bistro-inkSoft hover:text-bistro-ink transition-all">Desserts & Drinks</button>
       </nav>
 
-      <!-- Dietary & Pairing Quick Filters -->
-      <div class="px-4 py-2 flex items-center justify-between text-[11px] border-b border-bistro-borderMuted bg-bistro-card/40">
-        <span class="text-bistro-inkMuted font-mono uppercase text-[10px]">Filter Carte:</span>
+      <!-- Dietary Preference Quick Toggles -->
+      <div class="px-4 py-2 flex items-center justify-between text-xs border-b border-bistro-border/20 bg-bistro-card/30">
+        <span class="text-[11px] text-bistro-inkMuted font-mono uppercase">Dietary Filter:</span>
         <div class="flex items-center gap-3">
           <label class="flex items-center gap-1.5 cursor-pointer">
-            <input type="checkbox" id="filterVeg" onchange="applyFilters()" class="accent-emerald-500 rounded">
-            <span class="text-emerald-400 font-medium">Vegetarian</span>
+            <input type="checkbox" id="vegOnly" onchange="applyFilters()" class="accent-emerald-500 rounded">
+            <span class="text-xs text-emerald-400 font-medium">Veg Only</span>
           </label>
           <label class="flex items-center gap-1.5 cursor-pointer">
-            <input type="checkbox" id="filterChef" onchange="applyFilters()" class="accent-bistro-gold rounded">
-            <span class="text-bistro-goldHi font-medium">Chef's Signatures</span>
+            <input type="checkbox" id="chefSpecial" onchange="applyFilters()" class="accent-bistro-gold rounded">
+            <span class="text-xs text-bistro-goldHi">Chef's Picks</span>
           </label>
         </div>
       </div>
 
-      <!-- Menu Feed -->
-      <div id="menuFeed" class="p-4 space-y-3.5 flex-1">
+      <!-- Menu Items Container -->
+      <div id="menuContainer" class="p-4 space-y-3.5 flex-1">
         <!-- Rendered via JavaScript -->
       </div>
     </main>
 
-    <!-- FLOATING THUMB-ZONE BOTTOM DOCK -->
-    <div id="cartDock" class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-40 p-3 bg-gradient-to-t from-bistro-bg via-bistro-bg/95 to-transparent transition-transform translate-y-36">
-      <div class="bg-gradient-to-r from-bistro-maroonDeep via-bistro-card to-bistro-elevated border border-bistro-gold/40 rounded-2xl p-3 shadow-bottom-dock flex items-center justify-between backdrop-blur-2xl">
-        <div class="cursor-pointer flex items-center gap-3 pl-1" onclick="openOrderTraySheet()">
-          <div class="w-10 h-10 rounded-xl bg-bistro-gold/20 border border-bistro-gold/40 flex items-center justify-center text-bistro-gold font-mono font-bold text-sm" id="cartCountBadge">
-            0
-          </div>
-          <div>
-            <span class="text-[10px] font-mono text-bistro-gold uppercase tracking-wider block" id="cartSummaryLabel">TRAY PENDING</span>
-            <span class="text-sm font-bold text-bistro-ink font-mono" id="cartTotalLabel">₹0</span>
-          </div>
+    <!-- FLOATING BOTTOM ORDER DOCK -->
+    <div id="cartBar" class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-40 p-3 bg-gradient-to-t from-bistro-bg via-bistro-bg/95 to-transparent transition-transform translate-y-32">
+      <div class="bg-gradient-to-r from-bistro-maroon via-[#5e1925] to-bistro-card border border-bistro-gold/40 rounded-2xl p-3.5 shadow-2xl flex items-center justify-between backdrop-blur-xl">
+        <div class="cursor-pointer" onclick="openCartModal()">
+          <span class="text-[11px] font-mono text-bistro-gold uppercase tracking-wider block" id="cartItemSummary">0 ITEMS IN CART</span>
+          <span class="text-base font-bold text-bistro-ink font-mono" id="cartTotalSummary">₹0</span>
         </div>
-
-        <button onclick="openOrderTraySheet()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-bistro-gold to-[#aa8018] text-[#120b09] font-bold text-xs tracking-wider uppercase shadow-gold-subtle flex items-center gap-1.5 active:scale-95 transition-transform">
-          <span>Review Tray</span>
+        <button onclick="openCartModal()" class="px-5 py-2.5 rounded-xl bg-bistro-gold text-[#140c0a] font-semibold text-xs tracking-wider uppercase shadow-md flex items-center gap-1.5 active:scale-95 transition-transform">
+          Review & Place
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
         </button>
       </div>
     </div>
 
-    <!-- SHEET 1: DISH SPOTLIGHT & 360° PAIRING DRAWER -->
-    <div id="dishDetailSheet" class="fixed inset-0 z-50 sheet-closed flex flex-col justify-end max-w-md mx-auto">
-      <div class="sheet-backdrop fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeDishDetailSheet()"></div>
-      <div class="sheet-drawer relative bg-bistro-sheet border-t border-bistro-border rounded-t-3xl p-5 max-h-[88vh] overflow-y-auto hide-scroll z-10 shadow-2xl">
-        <div class="w-12 h-1 bg-bistro-border/60 rounded-full mx-auto mb-4"></div>
-
-        <div class="flex items-start justify-between pb-3 border-b border-bistro-border/30">
+    <!-- MODAL 1: CUSTOMIZE DISH MODAL -->
+    <div id="customizeModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-end justify-center max-w-md mx-auto">
+      <div class="bg-bistro-card border-t border-x border-bistro-border w-full rounded-t-3xl p-5 modal-enter max-h-[85vh] overflow-y-auto hide-scroll">
+        <div class="flex items-center justify-between pb-3 border-b border-bistro-border/40">
           <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span id="sheetVegBadge" class="w-3.5 h-3.5 rounded-sm border flex items-center justify-center p-0.5">
-                <span class="w-1.5 h-1.5 rounded-full"></span>
-              </span>
-              <span id="sheetCategoryTag" class="text-[10px] font-mono tracking-widest text-bistro-gold uppercase">Course</span>
-            </div>
-            <h3 id="sheetDishName" class="font-serif text-2xl font-semibold text-bistro-goldHi">Dish Title</h3>
-            <span id="sheetDishPrice" class="font-mono text-base font-bold text-bistro-gold">₹0</span>
+            <h3 id="custDishName" class="font-serif text-xl font-medium text-bistro-goldHi">Dish Name</h3>
+            <span id="custDishPrice" class="font-mono text-sm text-bistro-gold">₹0</span>
           </div>
-          <button onclick="closeDishDetailSheet()" class="p-2 rounded-full bg-bistro-elevated text-bistro-inkMuted">
+          <button onclick="closeCustomizeModal()" class="p-1.5 rounded-full bg-bistro-elevated text-bistro-inkMuted hover:text-bistro-ink">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
 
-        <p id="sheetDishDesc" class="text-xs text-bistro-inkSoft leading-relaxed py-3 border-b border-bistro-borderMuted">
-          Culinary description and ingredient story.
-        </p>
-
-        <div class="py-3 border-b border-bistro-borderMuted space-y-2">
-          <span class="text-[10px] font-mono uppercase tracking-widest text-bistro-gold block">Flavor Architecture</span>
-          <div class="grid grid-cols-3 gap-2 text-center text-xs">
-            <div class="p-2 rounded-xl bg-bistro-elevated border border-bistro-borderMuted">
-              <span class="text-[9px] font-mono text-bistro-inkMuted uppercase block">Spice Quotient</span>
-              <span id="sheetHeatScore" class="font-mono font-bold text-bistro-goldHi">7/10</span>
-            </div>
-            <div class="p-2 rounded-xl bg-bistro-elevated border border-bistro-borderMuted">
-              <span class="text-[9px] font-mono text-bistro-inkMuted uppercase block">Terroir Aroma</span>
-              <span id="sheetAromaScore" class="font-mono font-bold text-bistro-goldHi">Charcoal Sigri</span>
-            </div>
-            <div class="p-2 rounded-xl bg-bistro-elevated border border-bistro-borderMuted">
-              <span class="text-[9px] font-mono text-bistro-inkMuted uppercase block">Ghee Richness</span>
-              <span id="sheetRichnessScore" class="font-mono font-bold text-bistro-goldHi">Velvety</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="py-3 border-b border-bistro-borderMuted">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-[10px] font-mono uppercase tracking-widest text-bistro-gold">Sommelier Pairing</span>
-            <span class="text-[9px] font-mono text-emerald-400">Recommended</span>
-          </div>
-          <div class="p-3 rounded-2xl bg-bistro-elevated border border-bistro-border/60 flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-              <span class="text-xl">🍷</span>
-              <div>
-                <h5 id="sheetWineTitle" class="text-xs font-semibold text-bistro-ink">Fratelli Sette Reserve 2019</h5>
-                <p class="text-[10px] text-bistro-inkMuted font-mono">Single-Pour Glass (150ml)</p>
-              </div>
-            </div>
-            <button onclick="addPairingGlass()" class="px-2.5 py-1.5 rounded-lg bg-bistro-maroon border border-bistro-gold/40 text-[10px] font-mono text-bistro-goldHi font-medium active:scale-95">
-              +₹320 Glass
-            </button>
-          </div>
-        </div>
-
-        <div class="py-3 space-y-3">
+        <div class="py-4 space-y-4">
+          <!-- Spice Level Selection -->
           <div>
-            <label class="block text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Dietary Preparation</label>
-            <div class="grid grid-cols-2 gap-2 text-xs">
-              <label class="flex items-center justify-between p-2 rounded-xl bg-bistro-elevated border border-bistro-borderMuted text-[11px] cursor-pointer">
-                <span>Jain (No Onion/Garlic)</span>
-                <input type="checkbox" id="sheetCheckJain" class="accent-bistro-gold rounded">
+            <label class="block text-xs font-mono uppercase tracking-wider text-bistro-inkMuted mb-2">Spice Level Preference</label>
+            <div class="grid grid-cols-3 gap-2 text-xs">
+              <label class="flex flex-col items-center p-2.5 rounded-xl bg-bistro-elevated border border-bistro-border cursor-pointer has-[:checked]:border-bistro-gold has-[:checked]:bg-bistro-gold/10">
+                <input type="radio" name="custSpice" value="Mild" class="hidden">
+                <span class="text-base mb-0.5">🌱</span>
+                <span>Mild</span>
               </label>
-              <label class="flex items-center justify-between p-2 rounded-xl bg-bistro-elevated border border-bistro-borderMuted text-[11px] cursor-pointer">
-                <span>Low Clarified Ghee</span>
-                <input type="checkbox" id="sheetCheckLowOil" class="accent-bistro-gold rounded">
+              <label class="flex flex-col items-center p-2.5 rounded-xl bg-bistro-elevated border border-bistro-border cursor-pointer has-[:checked]:border-bistro-gold has-[:checked]:bg-bistro-gold/10">
+                <input type="radio" name="custSpice" value="Authentic Medium" checked class="hidden">
+                <span class="text-base mb-0.5">🌶️</span>
+                <span>Medium</span>
+              </label>
+              <label class="flex flex-col items-center p-2.5 rounded-xl bg-bistro-elevated border border-bistro-border cursor-pointer has-[:checked]:border-bistro-gold has-[:checked]:bg-bistro-gold/10">
+                <input type="radio" name="custSpice" value="Desi Spicy" class="hidden">
+                <span class="text-base mb-0.5">🔥</span>
+                <span>Extra Hot</span>
               </label>
             </div>
           </div>
 
+          <!-- Diet Modifiers -->
           <div>
-            <label class="block text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1">Kitchen Modifiers</label>
-            <input type="text" id="sheetKitchenNotes" placeholder="e.g. Extra crisp tandoor charring, sauce aside" class="w-full bg-bistro-elevated border border-bistro-borderMuted rounded-xl px-3 py-2 text-xs text-bistro-ink outline-none focus:border-bistro-gold font-sans">
+            <label class="block text-xs font-mono uppercase tracking-wider text-bistro-inkMuted mb-2">Preparation Instructions</label>
+            <div class="space-y-1.5 text-xs">
+              <label class="flex items-center justify-between p-2.5 rounded-xl bg-bistro-elevated border border-bistro-border cursor-pointer">
+                <span>Jain Preparation (No Onion / Garlic)</span>
+                <input type="checkbox" id="custJain" class="accent-bistro-gold w-4 h-4 rounded">
+              </label>
+              <label class="flex items-center justify-between p-2.5 rounded-xl bg-bistro-elevated border border-bistro-border cursor-pointer">
+                <span>Less Oil / Ghee</span>
+                <input type="checkbox" id="custLessOil" class="accent-bistro-gold w-4 h-4 rounded">
+              </label>
+            </div>
+          </div>
+
+          <!-- Free-text Note to Chef -->
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Note for the Kitchen</label>
+            <input type="text" id="custNotes" placeholder="e.g. Extra crispy, serve sauce separately..." class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-3 py-2 text-xs text-bistro-ink outline-none focus:border-bistro-gold">
           </div>
         </div>
 
-        <button onclick="confirmDetailAdd()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-bistro-gold to-[#aa8018] text-[#120b09] font-bold text-xs tracking-wider uppercase active:scale-98 transition-transform mt-2">
-          Add Selection to Tray
+        <button onclick="confirmCustomizationAndAdd()" class="w-full py-3.5 rounded-xl bg-bistro-gold text-[#140c0a] font-semibold text-sm tracking-wide active:scale-98 transition-transform">
+          Add to Tray
         </button>
       </div>
     </div>
 
-    <!-- SHEET 2: TABLE TRAY & KOT DISPATCH -->
-    <div id="orderTraySheet" class="fixed inset-0 z-50 sheet-closed flex flex-col justify-end max-w-md mx-auto">
-      <div class="sheet-backdrop fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeOrderTraySheet()"></div>
-      <div class="sheet-drawer relative bg-bistro-sheet border-t border-bistro-border rounded-t-3xl p-5 max-h-[90vh] flex flex-col z-10 shadow-2xl">
-        <div class="w-12 h-1 bg-bistro-border/60 rounded-full mx-auto mb-4"></div>
-
-        <div class="flex items-center justify-between pb-3 border-b border-bistro-border/30">
+    <!-- MODAL 2: CART REVIEW & SUBMIT MODAL -->
+    <div id="cartModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-end justify-center max-w-md mx-auto">
+      <div class="bg-bistro-card border-t border-x border-bistro-border w-full rounded-t-3xl p-5 modal-enter max-h-[90vh] flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-bistro-border/40">
           <div>
-            <h3 class="font-serif text-2xl font-semibold text-bistro-goldHi">Dining Tray</h3>
-            <p class="text-[10px] font-mono text-bistro-inkMuted">Table T-04 · Direct KOT Sequence</p>
+            <h3 class="font-serif text-2xl font-semibold text-bistro-goldHi">Your Table Tray</h3>
+            <p class="text-xs text-bistro-inkMuted" id="cartModalSubhead">Review your dishes before dispatching</p>
           </div>
-          <button onclick="closeOrderTraySheet()" class="p-2 rounded-full bg-bistro-elevated text-bistro-inkMuted">
+          <button onclick="closeCartModal()" class="p-1.5 rounded-full bg-bistro-elevated text-bistro-inkMuted hover:text-bistro-ink">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
 
-        <div id="trayItemsContainer" class="py-3 space-y-3 flex-1 overflow-y-auto hide-scroll divide-y divide-bistro-borderMuted">
+        <!-- Cart Items List (Scrollable) -->
+        <div id="cartItemsList" class="py-4 space-y-3 flex-1 overflow-y-auto hide-scroll divide-y divide-bistro-border/30">
           <!-- Populated by JS -->
         </div>
 
+        <!-- Bill Calculations -->
         <div class="border-t border-bistro-border/40 pt-3 space-y-1.5 text-xs text-bistro-inkSoft">
-          <div class="flex justify-between font-mono">
-            <span>Course Subtotal</span>
-            <span class="text-bistro-ink" id="traySubtotal">₹0</span>
+          <div class="flex justify-between">
+            <span>Items Subtotal</span>
+            <span class="font-mono text-bistro-ink" id="billSubtotal">₹0</span>
           </div>
-          <div class="flex justify-between font-mono text-bistro-inkMuted text-[11px]">
-            <span>Govt GST (5%)</span>
-            <span id="trayGST">₹0</span>
+          <div class="flex justify-between text-bistro-inkMuted">
+            <span>Restaurant GST (5%)</span>
+            <span class="font-mono" id="billGST">₹0</span>
           </div>
-          <div class="flex justify-between text-sm font-semibold text-bistro-goldHi pt-1 border-t border-bistro-borderMuted font-mono">
-            <span>Total Tray Obligation</span>
-            <span class="text-base font-bold" id="trayGrandTotal">₹0</span>
+          <div class="flex justify-between text-sm font-semibold text-bistro-goldHi pt-1 border-t border-bistro-border/20">
+            <span>Estimated Total</span>
+            <span class="font-mono text-base" id="billGrandTotal">₹0</span>
           </div>
         </div>
 
-        <button onclick="dispatchKOTToKitchen()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-bistro-gold via-[#e5c05c] to-[#aa8018] text-[#120b09] font-bold text-xs tracking-wider uppercase shadow-gold-glow active:scale-98 transition-transform mt-3 flex items-center justify-center gap-2">
-          <span>🔥 Dispatch KOT to Kitchen Pass</span>
+        <!-- Submit to Kitchen Button -->
+        <button id="dispatchKOTBtn" onclick="dispatchOrderToKitchen()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-bistro-gold to-[#c79b50] text-[#120b09] font-semibold text-sm tracking-wide shadow-lg shadow-bistro-gold/20 active:scale-98 transition-transform mt-4 flex items-center justify-center gap-2">
+          <span>🔥 Dispatch Order to Kitchen</span>
         </button>
       </div>
     </div>
 
-    <!-- SHEET 3: LIVE DINING PACING & ROUND 2 RE-ORDERING -->
-    <div id="pacingSheet" class="fixed inset-0 z-50 sheet-closed flex flex-col justify-end max-w-md mx-auto">
-      <div class="sheet-backdrop fixed inset-0 bg-black/85 backdrop-blur-md" onclick="closePacingSheet()"></div>
-      <div class="sheet-drawer relative bg-bistro-sheet border-t border-bistro-gold/40 rounded-t-3xl p-5 max-h-[92vh] flex flex-col z-10 shadow-2xl">
-        <div class="w-12 h-1 bg-bistro-border/60 rounded-full mx-auto mb-4"></div>
+    <!-- MODAL 3: RUNNING TAB & BILL SETTLEMENT MODAL -->
+    <div id="runningTabModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 max-w-md mx-auto">
+      <div class="bg-bistro-card border border-bistro-gold/40 w-full rounded-2xl p-5 modal-enter max-h-[92vh] flex flex-col shadow-2xl relative">
+        <button onclick="toggleRunningTab(false)" class="absolute right-4 top-4 p-1.5 rounded-full bg-bistro-elevated text-bistro-inkMuted hover:text-bistro-ink">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
 
         <div class="text-center pb-3 border-b border-bistro-border/40">
-          <div class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-mono text-[10px] tracking-wider uppercase border border-emerald-500/30 mb-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Live Kitchen Pacing
-          </div>
-          <h3 class="font-serif text-2xl font-semibold text-bistro-goldHi">Table T-04 Running Tab</h3>
-          <p id="pacingRoundsSubtitle" class="text-[10px] text-bistro-inkMuted font-mono">1 Active Round in Hot Sigri Prep</p>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-mono text-[10px] tracking-wider uppercase border border-emerald-500/20 mb-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Live Kitchen Session
+          </span>
+          <h3 class="font-serif text-2xl font-semibold text-bistro-goldHi">Active Table Tab</h3>
+          <p class="text-[11px] text-bistro-inkMuted font-mono" id="runningTabHeaderInfo">Table T-04 · 0 Rounds Placed</p>
         </div>
 
-        <div class="py-3 px-2 border-b border-bistro-borderMuted">
-          <div class="flex items-center justify-between text-[9px] font-mono text-bistro-inkMuted mb-1.5">
-            <span class="text-bistro-gold font-bold">1. Fired</span>
-            <span class="text-bistro-gold font-bold">2. Sigri Prep</span>
-            <span>3. Plating</span>
-            <span>4. Table Pass</span>
-          </div>
-          <div class="w-full bg-bistro-elevated rounded-full h-1.5 overflow-hidden">
-            <div class="bg-gradient-to-r from-bistro-gold to-emerald-400 h-full w-1/2 rounded-full animate-pulse"></div>
-          </div>
-        </div>
-
-        <div id="placedRoundsList" class="flex-1 overflow-y-auto hide-scroll py-3 space-y-3">
-          <!-- Populated by JS -->
+        <div id="runningRoundsList" class="flex-1 overflow-y-auto hide-scroll py-3 space-y-3">
+          <!-- Populated by JS with rounds (Round 1, Round 2) -->
         </div>
 
         <div class="border-t border-bistro-border/40 pt-3 space-y-2 text-xs">
           <div class="flex justify-between font-mono text-sm font-bold text-bistro-goldHi">
-            <span>Cumulative Table Total:</span>
-            <span id="pacingCumulativeTotal">₹0</span>
+            <span>Running Bill Total:</span>
+            <span id="runningGrandTotal">₹0</span>
           </div>
 
-          <div class="grid grid-cols-2 gap-2 pt-1">
-            <button onclick="closePacingSheet()" class="py-3 rounded-xl border border-bistro-border bg-bistro-elevated text-bistro-ink text-xs font-semibold active:scale-95">
-              + Order Next Round
+          <div class="grid grid-cols-2 gap-2 pt-2">
+            <button onclick="toggleRunningTab(false)" class="py-2.5 rounded-xl border border-bistro-border bg-bistro-elevated text-bistro-ink text-xs font-medium active:scale-95">
+              + Order More Food
             </button>
-            <button onclick="openBillSettlementSheet()" class="py-3 rounded-xl bg-bistro-gold text-[#120b09] font-bold text-xs uppercase tracking-wide active:scale-95 shadow-gold-subtle">
+            <button onclick="requestFinalBill()" class="py-2.5 rounded-xl bg-bistro-gold text-[#140c0a] font-semibold text-xs active:scale-95 shadow-md">
               Request Bill & Pay
             </button>
           </div>
@@ -416,527 +331,433 @@
       </div>
     </div>
 
-    <!-- SHEET 4: BILL CONCIERGE, SPLITTER & UPI CHECKOUT -->
-    <div id="billSettlementSheet" class="fixed inset-0 z-50 sheet-closed flex flex-col justify-end max-w-md mx-auto">
-      <div class="sheet-backdrop fixed inset-0 bg-black/90 backdrop-blur-md" onclick="closeBillSettlementSheet()"></div>
-      <div class="sheet-drawer relative bg-bistro-sheet border-t border-bistro-gold/40 rounded-t-3xl p-5 max-h-[92vh] overflow-y-auto hide-scroll z-10 shadow-2xl">
-        <div class="w-12 h-1 bg-bistro-border/60 rounded-full mx-auto mb-4"></div>
+    <!-- MODAL 4: UPI PAYMENT QR & RECEIPT -->
+    <div id="billPayModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4 max-w-md mx-auto">
+      <div class="bg-bistro-card border border-bistro-gold/40 w-full rounded-2xl p-6 modal-enter text-center shadow-2xl">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 mx-auto flex items-center justify-center mb-3">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3 class="font-serif text-2xl font-semibold text-bistro-goldHi mb-1">Bill Summary</h3>
+        <p class="text-xs text-bistro-inkMuted mb-4">Cashier desk has been notified for settlement.</p>
 
-        <div class="text-center pb-3 border-b border-bistro-border/30">
-          <h3 class="font-serif text-2xl font-semibold text-bistro-goldHi">Folio Settlement</h3>
-          <p class="text-[10px] text-bistro-inkMuted font-mono">Table T-04 · Tax Invoice & Splitter</p>
+        <!-- Simulated UPI QR Code -->
+        <div class="bg-white p-4 rounded-2xl inline-block shadow-inner mb-3">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=spicebistro@icici&pn=TheSpiceBistro&cu=INR" alt="UPI QR" class="w-36 h-36 mx-auto">
+          <p class="text-[10px] text-gray-700 font-mono mt-1 font-semibold">Scan with GPay / PhonePe / Paytm</p>
         </div>
 
-        <div class="py-3 border-b border-bistro-borderMuted">
-          <div class="flex justify-between items-center mb-1">
-            <span class="text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted">Split Between Diners</span>
-            <span id="splitDinerCount" class="font-mono text-xs font-bold text-bistro-gold">1 Person</span>
-          </div>
-          <input type="range" id="splitSlider" min="1" max="8" value="1" oninput="updateSplitMath()" class="w-full accent-bistro-gold">
-        </div>
-
-        <div class="py-3 border-b border-bistro-borderMuted">
-          <span class="text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted block mb-2">Butler & Kitchen Gratuity</span>
-          <div class="grid grid-cols-4 gap-2 text-xs font-mono text-center">
-            <button onclick="setTip(0)" class="tip-btn p-2 rounded-xl bg-bistro-elevated border border-bistro-borderMuted text-bistro-inkMuted">0%</button>
-            <button onclick="setTip(7)" class="tip-btn p-2 rounded-xl bg-bistro-elevated border border-bistro-borderMuted text-bistro-ink">7%</button>
-            <button onclick="setTip(10)" class="tip-btn active p-2 rounded-xl bg-bistro-gold text-[#120b09] font-bold">10%</button>
-            <button onclick="setTip(15)" class="tip-btn p-2 rounded-xl bg-bistro-elevated border border-bistro-borderMuted text-bistro-ink">15%</button>
-          </div>
-        </div>
-
-        <div class="py-4 text-center">
-          <div class="bg-white p-3 rounded-2xl inline-block shadow-2xl mb-2">
-            <img id="upiQRCodeImage" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=thespicebistro@icici&pn=TheSpiceBistro&am=0&cu=INR" alt="UPI QR" class="w-36 h-36 mx-auto">
-          </div>
-          <p class="text-[10px] font-mono text-bistro-inkMuted uppercase tracking-wider">Tap to Pay via GPay / PhonePe / Paytm</p>
-          <div id="splitPerHeadAmount" class="font-mono text-xl font-bold text-bistro-goldHi mt-1">₹0 per guest</div>
-        </div>
+        <div class="font-mono text-xl font-bold text-bistro-gold mb-4" id="finalPayAmount">₹0</div>
 
         <div class="space-y-2">
-          <button onclick="notifyCashierCash()" class="w-full py-3 rounded-xl border border-bistro-border bg-bistro-elevated text-bistro-ink text-xs font-medium active:scale-95">
-            Pay via Credit Card Terminal / Cash
+          <button onclick="alert('Notification sent! The server is bringing the card machine/change to your table.')" class="w-full py-2.5 rounded-xl border border-bistro-border bg-bistro-elevated text-bistro-ink text-xs font-medium">
+            Pay with Cash or Card Machine
           </button>
-          <button onclick="finishDiningExperience()" class="w-full py-3 rounded-xl bg-bistro-gold text-[#120b09] font-bold text-xs uppercase tracking-wide active:scale-95">
-            Payment Settled · Conclude Meal
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- SHEET 5: BUTLER CALL CONCIERGE -->
-    <div id="butlerSheet" class="fixed inset-0 z-50 sheet-closed flex flex-col justify-end max-w-md mx-auto">
-      <div class="sheet-backdrop fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeButlerSheet()"></div>
-      <div class="sheet-drawer relative bg-bistro-sheet border-t border-bistro-border rounded-t-3xl p-5 z-10 shadow-2xl">
-        <div class="w-12 h-1 bg-bistro-border/60 rounded-full mx-auto mb-4"></div>
-
-        <h3 class="font-serif text-2xl font-semibold text-bistro-goldHi mb-1">Discreet Butler Summon</h3>
-        <p class="text-[10px] font-mono text-bistro-inkMuted mb-4">Your request will be dispatched directly to your floor captain's pager.</p>
-
-        <div class="grid grid-cols-2 gap-2.5 text-xs font-mono mb-4">
-          <button onclick="summonButlerRequest('Mineral Water Refill')" class="p-3 rounded-2xl bg-bistro-elevated border border-bistro-border/60 text-bistro-ink text-left active:border-bistro-gold">
-            💧 Water Refill
-          </button>
-          <button onclick="summonButlerRequest('Fresh Cutlery / Plates')" class="p-3 rounded-2xl bg-bistro-elevated border border-bistro-border/60 text-bistro-ink text-left active:border-bistro-gold">
-            🍴 Clean Plates
-          </button>
-          <button onclick="summonButlerRequest('Sommelier Table Consultation')" class="p-3 rounded-2xl bg-bistro-elevated border border-bistro-border/60 text-bistro-ink text-left active:border-bistro-gold">
-            🍷 Sommelier Call
-          </button>
-          <button onclick="summonButlerRequest('Senior Captain Attention')" class="p-3 rounded-2xl bg-bistro-elevated border border-bistro-border/60 text-bistro-ink text-left active:border-bistro-gold">
-            🤵 Senior Captain
+          <button onclick="resetAndCloseAll()" class="w-full py-2.5 rounded-xl bg-bistro-gold text-[#140c0a] font-semibold text-xs">
+            Done & Finish Dining
           </button>
         </div>
-
-        <button onclick="closeButlerSheet()" class="w-full py-3 rounded-xl border border-bistro-border bg-bistro-card text-bistro-inkMuted text-xs font-mono">
-          Dismiss
-        </button>
       </div>
     </div>
 
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
   <script>
-    const AudioEngine = {
-      ctx: null,
-      init() {
-        if (!this.ctx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          if (AudioContext) this.ctx = new AudioContext();
-        }
-      },
-      playChime() {
-        try {
-          this.init();
-          if (!this.ctx) return;
-          const osc1 = this.ctx.createOscillator();
-          const osc2 = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-
-          osc1.type = 'sine';
-          osc1.frequency.setValueAtTime(587.33, this.ctx.currentTime);
-          osc1.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.35);
-
-          osc2.type = 'triangle';
-          osc2.frequency.setValueAtTime(880, this.ctx.currentTime);
-          osc2.frequency.exponentialRampToValueAtTime(1174.66, this.ctx.currentTime + 0.35);
-
-          gain.gain.setValueAtTime(0.01, this.ctx.currentTime);
-          gain.gain.linearRampToValueAtTime(0.2, this.ctx.currentTime + 0.05);
-          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.8);
-
-          osc1.connect(gain);
-          osc2.connect(gain);
-          gain.connect(this.ctx.destination);
-
-          osc1.start();
-          osc2.start();
-          osc1.stop(this.ctx.currentTime + 0.8);
-          osc2.stop(this.ctx.currentTime + 0.8);
-        } catch (e) {
-          console.log('Audio chime bypassed', e);
-        }
-      }
-    };
-
-    const GASTRONOMY_MENU = [
+    // ==========================================================
+    // MENU DATA MODEL
+    // ==========================================================
+    const MENU_ITEMS = [
       {
-        id: 'st-01',
-        name: 'Zafrani Gucchi Paneer Tikka',
+        id: 'st1',
+        name: 'Zafrani Paneer Tikka',
         category: 'starters',
-        courseName: 'Course I · Amuse',
-        price: 420,
-        isVeg: true,
-        isChef: true,
-        spicy: 'Mild · Saffron',
-        spiceScore: '3/10',
-        aroma: 'Kashmiri Saffron',
-        richness: 'Cream Cheese',
-        winePairing: 'Sula Dindori Reserve Viognier',
-        desc: 'Wild Himalayan morels and farm-pressed paneer infused with saffron cream, stone-ground green cardamom, and smoked over applewood.'
-      },
-      {
-        id: 'st-02',
-        name: 'Kakori Galawat Sheekh',
-        category: 'starters',
-        courseName: 'Course I · Amuse',
-        price: 520,
-        isVeg: false,
-        isChef: true,
-        spicy: 'Melt-in-mouth',
-        spiceScore: '5/10',
-        aroma: 'Rose Petal Ittar',
-        richness: 'Clarified Bone Marrow',
-        winePairing: 'Fratelli Sette Reserve 2019',
-        desc: 'Finely minced pasture-raised lamb tenderized with raw papaya and 24 secret royal spices, pan-seared in ghee over an iron tawa.'
-      },
-      {
-        id: 'td-01',
-        name: 'Bhatthi Da Smoked Murgh',
-        category: 'tandoor',
-        courseName: 'Sigri Charcoal Oven',
-        price: 540,
-        isVeg: false,
-        isChef: true,
-        spicy: 'Medium Heat',
-        spiceScore: '7/10',
-        aroma: 'Charcoal Mustard',
-        richness: 'Degi Mirch Ghee',
-        winePairing: 'Grover Zampa La Réserve Shiraz',
-        desc: 'Spring chicken steeped in pungent cold-pressed mustard oil, Mathania red chilies, hung curd, and roasted on skewers over glowing charcoal.'
-      },
-      {
-        id: 'td-02',
-        name: 'Malai Truffle Charred Broccoli',
-        category: 'tandoor',
-        courseName: 'Sigri Charcoal Oven',
-        price: 380,
-        isVeg: true,
-        isChef: false,
-        spicy: 'Gentle',
-        spiceScore: '2/10',
-        aroma: 'Black Truffle',
-        richness: 'Philadelphia Emulsion',
-        winePairing: 'Chandon Brut Vintage',
-        desc: 'Organic broccoli florets steeped in yellow mustard, processed cheese, and finished with a delicate misting of white truffle oil.'
-      },
-      {
-        id: 'cr-01',
-        name: 'Bukhara Dal 24-Hour Dum',
-        category: 'curry',
-        courseName: 'Course II · Royal Gravies',
         price: 360,
         isVeg: true,
         isChef: true,
-        spicy: 'Earthy Silky',
-        spiceScore: '3/10',
-        aroma: 'Sun-dried Fenugreek',
-        richness: 'Fresh Churned Makkhan',
-        winePairing: 'Casablanca Pinot Noir',
-        desc: 'Whole black lentils slow-simmered over tandoor embers for twenty-four continuous hours with San Marzano style tomatoes and white churned butter.'
+        spicy: '🌶️',
+        desc: 'Cottage cheese steeped in Kashmiri saffron, hung curd & crushed coriander seed marinade.',
+        tags: ['Tandoor Oven', 'Gluten Free']
       },
       {
-        id: 'cr-02',
-        name: 'Purani Dilli Aslam Butter Chicken',
-        category: 'curry',
-        courseName: 'Course II · Royal Gravies',
-        price: 540,
+        id: 'st2',
+        name: 'Murgh Malai Sheekh',
+        category: 'starters',
+        price: 440,
         isVeg: false,
         isChef: true,
-        spicy: 'Rich Velvety',
-        spiceScore: '6/10',
-        aroma: 'Kasuri Methi Smoke',
-        richness: 'Amul Butter Bath',
-        winePairing: 'Chinkara Cabernet Shiraz',
-        desc: 'Tender pulled chicken tikka submerged in a velvety, satin tomato sauce tempered with roasted green cardamom and melted unsalted butter.'
+        spicy: '🌱',
+        desc: 'Minced chicken blended with processed cheese, mace, green cardamom & charcoal smoked.',
+        tags: ['Mild', 'Chef Pick']
       },
       {
-        id: 'by-01',
-        name: 'Dum Pukht Awadhi Gosht Biryani',
-        category: 'biryani',
-        courseName: 'Royal Rice & Tandoor Breads',
+        id: 'st3',
+        name: 'Crispy Karuveppilai Prawns',
+        category: 'starters',
+        price: 520,
+        isVeg: false,
+        isChef: false,
+        spicy: '🔥',
+        desc: 'Coastal bay prawns tossed in roasted curry leaf oil, black pepper & Byadagi chili.',
+        tags: ['Coastal', 'Crispy']
+      },
+      {
+        id: 'td1',
+        name: 'Tandoori Smoked Broccoli',
+        category: 'tandoor',
+        price: 340,
+        isVeg: true,
+        isChef: false,
+        spicy: '🌱',
+        desc: 'Floret marinated with yellow mustard paste, roasted chickpea flour & cream cheese.',
+        tags: ['Healthy', 'Mild']
+      },
+      {
+        id: 'td2',
+        name: 'Bhatthi Da Murgh',
+        category: 'tandoor',
+        price: 480,
+        isVeg: false,
+        isChef: true,
+        spicy: '🔥',
+        desc: 'Classic bone-in half chicken charred over hot embers with degi mirch & mustard oil.',
+        tags: ['Signature', 'Clay Oven']
+      },
+      {
+        id: 'cr1',
+        name: 'Dal Makhani Bukhara',
+        category: 'curry',
+        price: 320,
+        isVeg: true,
+        isChef: true,
+        spicy: '🌱',
+        desc: 'Urad lentils slow-simmered for 24 hours with vine tomatoes, churned butter & cream.',
+        tags: ['Iconic', 'Slow Cooked']
+      },
+      {
+        id: 'cr2',
+        name: 'Old Delhi Butter Chicken',
+        category: 'curry',
+        price: 490,
+        isVeg: false,
+        isChef: true,
+        spicy: '🌶️',
+        desc: 'Pulled tandoori chicken simmered in a velvety tomato makhani sauce finished with kasuri methi.',
+        tags: ['Bestseller']
+      },
+      {
+        id: 'cr3',
+        name: 'Nalli Nihari Gosht',
+        category: 'curry',
         price: 590,
         isVeg: false,
         isChef: true,
-        spicy: 'Fragrant Medium',
-        spiceScore: '5/10',
-        aroma: 'Kewra & Mace',
-        richness: 'Desi Cow Ghee',
-        winePairing: 'Château de Bellevue Bordeaux',
-        desc: 'Aged long-grain Dehradun basmati rice and baby goat ribs sealed in a clay handi with purdah dough, gently steamed over low heat.'
+        spicy: '🌶️',
+        desc: 'Slow-braised mutton shanks in an aromatic bone marrow broth scented with rose petals.',
+        tags: ['Royal', 'Rich']
       },
       {
-        id: 'by-02',
-        name: 'Amritsari Kulcha & Smoked Butter Naan',
+        id: 'by1',
+        name: 'Dum Pukht Awadhi Biryani',
         category: 'biryani',
-        courseName: 'Royal Rice & Tandoor Breads',
-        price: 120,
+        price: 460,
+        isVeg: false,
+        isChef: true,
+        spicy: '🌶️',
+        desc: 'Aged basmati rice and marinated spring chicken cooked under a sealed dough crust with saffron ittar.',
+        tags: ['Slow Dum', 'With Raita']
+      },
+      {
+        id: 'by2',
+        name: 'Subz Nizami Biryani',
+        category: 'biryani',
+        price: 380,
         isVeg: true,
         isChef: false,
-        spicy: 'Garlic Butter',
-        spiceScore: '2/10',
-        aroma: 'Burnt Garlic Embers',
-        richness: 'Clarified Butter Layered',
-        winePairing: 'Fresh House Craft Ale',
-        desc: 'Multi-layered leavened dough slapped onto clay tandoor walls, crusted with roasted garlic cloves and cilantro butter.'
+        spicy: '🌶️',
+        desc: 'Seasonal vegetables, fresh mint and basmati rice infused with whole garam masalas.',
+        tags: ['Vegetarian']
       },
       {
-        id: 'dg-01',
-        name: 'Kesari Rasmalai Tres Leches',
-        category: 'digestifs',
-        courseName: 'Course III · Mithai & Digestifs',
-        price: 280,
+        id: 'by3',
+        name: 'Amritsari Garlic Naan',
+        category: 'biryani',
+        price: 90,
         isVeg: true,
-        isChef: true,
-        spicy: 'Sweet Floral',
-        spiceScore: '0/10',
-        aroma: 'Damascus Rose & Cardamom',
-        richness: 'Almond Pistachio Rabri',
-        winePairing: 'Sula Late Harvest Chenin Blanc',
-        desc: 'Delicate cottage cheese discs steeped in saffron infused evaporated milk, paired with sponge cake and toasted Iranian pistachio slivers.'
+        isChef: false,
+        spicy: '🌱',
+        desc: 'Refined flour leavened flatbread brushed with crushed garlic and salted butter.',
+        tags: ['Clay Oven']
+      },
+      {
+        id: 'dk1',
+        name: 'Royal Shahi Tukda',
+        category: 'drinks',
+        price: 220,
+        isVeg: true,
+        isChef: false,
+        spicy: '🌱',
+        desc: 'Crispy fried brioche soaked in saffron cardamom milk, crowned with dense malai rabri.',
+        tags: ['Dessert']
+      },
+      {
+        id: 'dk2',
+        name: 'Alphonso Mango Lassi',
+        category: 'drinks',
+        price: 180,
+        isVeg: true,
+        isChef: false,
+        spicy: '🌱',
+        desc: 'Thick churned yogurt blended with Ratnagiri mango pulp and crushed pistachios.',
+        tags: ['Chilled']
       }
     ];
 
-    let session = {
+    // ==========================================================
+    // STATE MANAGEMENT
+    // ==========================================================
+    let userSession = {
       table: 'T-04',
-      guestName: '',
+      name: '',
       phone: ''
     };
 
-    let activeTray = [];
-    let runningRounds = [];
-    let selectedTipPercent = 10;
-    let inspectingDish = null;
+    // Active pending cart
+    let activeCart = []; // [{ item, qty, spice, jain, lessOil, notes }]
 
+    // Placed orders history (Round 1, Round 2)
+    let runningOrders = []; // [{ round: 1, time: '20:15', items: [...], subtotal: 0 }]
+
+    let pendingCustomizeItem = null;
+
+    // ==========================================================
+    // INITIALIZATION & URL PARAMETER PARSER
+    // ==========================================================
     window.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const urlTable = params.get('table');
-      if (urlTable) {
-        session.table = urlTable.toUpperCase();
-        document.getElementById('inputTable').value = session.table;
+      // Auto-extract table from URL ?table=T04 or ?table=T-12
+      const urlParams = new URLSearchParams(window.location.search);
+      const tableParam = urlParams.get('table');
+      if (tableParam) {
+        userSession.table = tableParam.toUpperCase();
+        document.getElementById('inputTable').value = userSession.table;
       }
-      renderMenuFeed(GASTRONOMY_MENU);
+      
+      const nameParam = urlParams.get('name');
+      if (nameParam) document.getElementById('inputName').value = nameParam;
+
+      renderMenu(MENU_ITEMS);
     });
 
-    function handleSessionSubmit(e) {
-      if (e) e.preventDefault();
-      startSession();
-    }
-
     function startSession() {
-      const table = document.getElementById('inputTable').value.trim() || 'T-04';
-      const name = document.getElementById('inputName').value.trim() || 'Distinguished Guest';
+      const table = document.getElementById('inputTable').value.trim();
+      const name = document.getElementById('inputName').value.trim();
       const phone = document.getElementById('inputPhone').value.trim();
 
-      session.table = table;
-      session.guestName = name;
-      session.phone = phone;
+      if (!table) { alert('Please enter or scan a valid Table Number.'); return; }
+      if (!name) { alert('Please enter your name.'); return; }
 
-      document.getElementById('topTableLabel').textContent = `Table ${session.table} · ${session.guestName}`;
+      userSession.table = table;
+      userSession.name = name;
+      userSession.phone = phone;
+
+      document.getElementById('tableBadge').textContent = `Table ${userSession.table} · ${userSession.name}`;
       document.getElementById('onboardingScreen').classList.add('hidden');
-      triggerHaptic();
-      AudioEngine.playChime();
     }
 
-    function triggerHaptic() {
-      if (navigator.vibrate) {
-        navigator.vibrate([15, 30, 20]);
-      }
-    }
+    // ==========================================================
+    // MENU RENDERING & FILTERING
+    // ==========================================================
+    let currentCategory = 'all';
 
-    let activeCategory = 'all';
-
-    function setCategory(cat) {
-      activeCategory = cat;
-      document.querySelectorAll('.cat-pill').forEach(btn => {
-        btn.classList.remove('bg-bistro-gold', 'text-[#0d0708]', 'font-semibold');
-        btn.classList.add('bg-bistro-card', 'border', 'border-bistro-borderMuted', 'text-bistro-inkSoft');
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(pill => {
+        pill.classList.remove('bg-bistro-gold', 'text-[#120b09]');
+        pill.classList.add('bg-bistro-card', 'border', 'border-bistro-border', 'text-bistro-inkSoft');
       });
-      event.target.classList.add('bg-bistro-gold', 'text-[#0d0708]', 'font-semibold');
-      event.target.classList.remove('bg-bistro-card', 'border', 'border-bistro-borderMuted', 'text-bistro-inkSoft');
+      event.target.classList.add('bg-bistro-gold', 'text-[#120b09]');
+      event.target.classList.remove('bg-bistro-card', 'border', 'border-bistro-border', 'text-bistro-inkSoft');
       applyFilters();
     }
 
     function applyFilters() {
-      const isVegOnly = document.getElementById('filterVeg').checked;
-      const isChefOnly = document.getElementById('filterChef').checked;
+      const vegOnly = document.getElementById('vegOnly').checked;
+      const chefSpecial = document.getElementById('chefSpecial').checked;
 
-      const filtered = GASTRONOMY_MENU.filter(dish => {
-        const matchesCategory = activeCategory === 'all' || dish.category === activeCategory;
-        const matchesVeg = !isVegOnly || dish.isVeg;
-        const matchesChef = !isChefOnly || dish.isChef;
-        return matchesCategory && matchesVeg && matchesChef;
+      let filtered = MENU_ITEMS.filter(item => {
+        const matchesCat = currentCategory === 'all' || item.category === currentCategory;
+        const matchesVeg = !vegOnly || item.isVeg;
+        const matchesChef = !chefSpecial || item.isChef;
+        return matchesCat && matchesVeg && matchesChef;
       });
 
-      renderMenuFeed(filtered);
+      renderMenu(filtered);
     }
 
-    function renderMenuFeed(items) {
-      const feed = document.getElementById('menuFeed');
+    function renderMenu(items) {
+      const container = document.getElementById('menuContainer');
       if (items.length === 0) {
-        feed.innerHTML = `<div class="text-center py-16 text-bistro-inkMuted text-xs font-mono">No creations match the selected dietary criteria.</div>`;
+        container.innerHTML = `<div class="text-center py-16 text-bistro-inkMuted text-xs">No dishes match your active filter.</div>`;
         return;
       }
 
-      feed.innerHTML = items.map(dish => {
-        const trayEntry = activeTray.find(t => t.item.id === dish.id);
-        const qty = trayEntry ? trayEntry.qty : 0;
+      container.innerHTML = items.map(dish => {
+        // Find if in cart
+        const cartEntry = activeCart.find(c => c.item.id === dish.id);
+        const qty = cartEntry ? cartEntry.qty : 0;
 
         return `
-          <div class="bg-bistro-card border border-bistro-border/60 rounded-2xl p-4 flex gap-3 relative overflow-hidden transition-all shadow-sm">
-            <div class="flex-1 flex flex-col justify-between" onclick="openDishDetailSheet('${dish.id}')">
+          <div class="bg-bistro-card border border-bistro-border/60 rounded-2xl p-4 flex gap-3.5 relative overflow-hidden transition-all">
+            <!-- Left Info -->
+            <div class="flex-1 flex flex-col justify-between">
               <div>
-                <div class="flex items-center gap-1.5 mb-1.5">
+                <div class="flex items-center gap-1.5 mb-1">
+                  <!-- Veg/NonVeg Marker -->
                   <span class="w-3.5 h-3.5 rounded-sm border ${dish.isVeg ? 'border-bistro-veg' : 'border-bistro-nonVeg'} flex items-center justify-center p-0.5">
                     <span class="w-1.5 h-1.5 rounded-full ${dish.isVeg ? 'bg-bistro-veg' : 'bg-bistro-nonVeg'}"></span>
                   </span>
-                  <span class="text-[9px] font-mono tracking-widest text-bistro-gold uppercase">${dish.courseName}</span>
-                  ${dish.isChef ? '<span class="text-[8px] font-mono bg-bistro-gold/15 text-bistro-goldHi px-1.5 py-0.5 rounded border border-bistro-gold/30">SIGNATURE</span>' : ''}
+                  
+                  ${dish.isChef ? '<span class="text-[9px] font-mono tracking-wider bg-bistro-gold/15 text-bistro-goldHi px-1.5 py-0.5 rounded border border-bistro-gold/30">CHEF SPECIAL</span>' : ''}
+                  <span class="text-[11px] text-bistro-inkMuted">${dish.spicy}</span>
                 </div>
 
-                <h4 class="font-serif text-lg font-medium text-bistro-goldHi leading-tight">${dish.name}</h4>
+                <h4 class="font-serif text-lg font-medium text-bistro-goldHi leading-snug">${dish.name}</h4>
                 <p class="text-[11px] text-bistro-inkSoft line-clamp-2 mt-1 leading-relaxed">${dish.desc}</p>
               </div>
 
-              <div class="mt-3 flex items-center gap-2">
-                <span class="font-mono text-sm font-semibold text-bistro-ink">₹${dish.price}</span>
-                <span class="text-[10px] text-bistro-inkMuted font-mono">· ${dish.spicy}</span>
+              <div class="mt-3 flex items-baseline gap-2">
+                <span class="font-mono text-base font-semibold text-bistro-ink">₹${dish.price}</span>
               </div>
             </div>
 
-            <div class="flex flex-col justify-end items-end w-20">
+            <!-- Right Add Action -->
+            <div class="flex flex-col justify-end items-end w-24">
               ${qty === 0 ? `
-                <button onclick="openDishDetailSheet('${dish.id}')" class="w-full py-2 rounded-xl bg-bistro-elevated border border-bistro-border/60 text-bistro-gold text-xs font-mono font-semibold active:scale-95 transition-all shadow-sm">
+                <button onclick="promptCustomization('${dish.id}')" class="w-full py-2 rounded-xl bg-bistro-elevated border border-bistro-border text-bistro-gold text-xs font-semibold hover:border-bistro-gold active:scale-95 transition-all">
                   ADD +
                 </button>
               ` : `
-                <div class="flex items-center justify-between w-full bg-bistro-elevated border border-bistro-gold/50 rounded-xl px-2 py-1.5 text-xs">
-                  <button onclick="adjustTrayQty('${dish.id}', -1)" class="text-bistro-gold font-bold px-1 active:scale-75">-</button>
-                  <span class="font-mono font-bold text-bistro-goldHi text-xs">${qty}</span>
-                  <button onclick="adjustTrayQty('${dish.id}', 1)" class="text-bistro-gold font-bold px-1 active:scale-75">+</button>
+                <div class="flex items-center justify-between w-full bg-bistro-elevated border border-bistro-gold/50 rounded-xl px-2 py-1 text-xs">
+                  <button onclick="updateQty('${dish.id}', -1)" class="w-6 h-6 flex items-center justify-center text-bistro-gold font-bold active:scale-75">-</button>
+                  <span class="font-mono font-semibold text-bistro-goldHi">${qty}</span>
+                  <button onclick="updateQty('${dish.id}', 1)" class="w-6 h-6 flex items-center justify-center text-bistro-gold font-bold active:scale-75">+</button>
                 </div>
               `}
-              <span class="text-[9px] text-bistro-inkMuted font-mono mt-1">Customize</span>
+              <span class="text-[9px] text-bistro-inkMuted mt-1">Customizable</span>
             </div>
           </div>
         `;
       }).join('');
     }
 
-    function openDishDetailSheet(dishId) {
-      const dish = GASTRONOMY_MENU.find(d => d.id === dishId);
+    // ==========================================================
+    // CUSTOMIZATION & CART LOGIC
+    // ==========================================================
+    function promptCustomization(dishId) {
+      const dish = MENU_ITEMS.find(d => d.id === dishId);
       if (!dish) return;
-      inspectingDish = dish;
 
-      document.getElementById('sheetDishName').textContent = dish.name;
-      document.getElementById('sheetDishPrice').textContent = `₹${dish.price}`;
-      document.getElementById('sheetDishDesc').textContent = dish.desc;
-      document.getElementById('sheetCategoryTag').textContent = dish.courseName;
-      document.getElementById('sheetHeatScore').textContent = dish.spiceScore;
-      document.getElementById('sheetAromaScore').textContent = dish.aroma;
-      document.getElementById('sheetRichnessScore').textContent = dish.richness;
-      document.getElementById('sheetWineTitle').textContent = dish.winePairing;
+      pendingCustomizeItem = dish;
+      document.getElementById('custDishName').textContent = dish.name;
+      document.getElementById('custDishPrice').textContent = `₹${dish.price}`;
+      document.getElementById('custNotes').value = '';
+      document.getElementById('custJain').checked = false;
+      document.getElementById('custLessOil').checked = false;
 
-      const vegDot = document.querySelector('#sheetVegBadge span');
-      const vegBorder = document.getElementById('sheetVegBadge');
-      if (dish.isVeg) {
-        vegDot.className = 'w-1.5 h-1.5 rounded-full bg-bistro-veg';
-        vegBorder.className = 'w-3.5 h-3.5 rounded-sm border border-bistro-veg flex items-center justify-center p-0.5';
-      } else {
-        vegDot.className = 'w-1.5 h-1.5 rounded-full bg-bistro-nonVeg';
-        vegBorder.className = 'w-3.5 h-3.5 rounded-sm border border-bistro-nonVeg flex items-center justify-center p-0.5';
-      }
-
-      document.getElementById('sheetCheckJain').checked = false;
-      document.getElementById('sheetCheckLowOil').checked = false;
-      document.getElementById('sheetKitchenNotes').value = '';
-
-      openSheet('dishDetailSheet');
+      document.getElementById('customizeModal').classList.remove('hidden');
     }
 
-    function closeDishDetailSheet() {
-      closeSheet('dishDetailSheet');
-      inspectingDish = null;
+    function closeCustomizeModal() {
+      document.getElementById('customizeModal').classList.add('hidden');
+      pendingCustomizeItem = null;
     }
 
-    function confirmDetailAdd() {
-      if (!inspectingDish) return;
-      const isJain = document.getElementById('sheetCheckJain').checked;
-      const isLowOil = document.getElementById('sheetCheckLowOil').checked;
-      const notes = document.getElementById('sheetKitchenNotes').value.trim();
+    function confirmCustomizationAndAdd() {
+      if (!pendingCustomizeItem) return;
 
-      const existingIndex = activeTray.findIndex(t => t.item.id === inspectingDish.id);
+      const spice = document.querySelector('input[name="custSpice"]:checked')?.value || 'Medium';
+      const jain = document.getElementById('custJain').checked;
+      const lessOil = document.getElementById('custLessOil').checked;
+      const notes = document.getElementById('custNotes').value.trim();
+
+      const existingIndex = activeCart.findIndex(c => c.item.id === pendingCustomizeItem.id);
+
       if (existingIndex > -1) {
-        activeTray[existingIndex].qty += 1;
+        activeCart[existingIndex].qty += 1;
       } else {
-        activeTray.push({
-          item: inspectingDish,
+        activeCart.push({
+          item: pendingCustomizeItem,
           qty: 1,
-          isJain,
-          isLowOil,
-          notes
+          spice: spice,
+          jain: jain,
+          lessOil: lessOil,
+          notes: notes
         });
       }
 
-      closeDishDetailSheet();
-      updateTrayDockUI();
+      closeCustomizeModal();
+      updateCartUI();
       applyFilters();
-      triggerHaptic();
-      AudioEngine.playChime();
     }
 
-    function addPairingGlass() {
-      alert(`Fratelli Sette Reserve 2019 added to Sommelier Beverage Folio (+₹320)`);
-      triggerHaptic();
-    }
-
-    function adjustTrayQty(dishId, delta) {
-      const idx = activeTray.findIndex(t => t.item.id === dishId);
+    function updateQty(dishId, delta) {
+      const idx = activeCart.findIndex(c => c.item.id === dishId);
       if (idx > -1) {
-        activeTray[idx].qty += delta;
-        if (activeTray[idx].qty <= 0) {
-          activeTray.splice(idx, 1);
+        activeCart[idx].qty += delta;
+        if (activeCart[idx].qty <= 0) {
+          activeCart.splice(idx, 1);
         }
       }
-      updateTrayDockUI();
+      updateCartUI();
       applyFilters();
-      triggerHaptic();
     }
 
-    function updateTrayDockUI() {
-      const dock = document.getElementById('cartDock');
-      const totalCount = activeTray.reduce((acc, t) => acc + t.qty, 0);
-      const subtotal = activeTray.reduce((acc, t) => acc + (t.item.price * t.qty), 0);
+    function updateCartUI() {
+      const cartBar = document.getElementById('cartBar');
+      const totalCount = activeCart.reduce((sum, c) => sum + c.qty, 0);
+      const subtotal = activeCart.reduce((sum, c) => sum + (c.item.price * c.qty), 0);
 
       if (totalCount > 0) {
-        dock.classList.remove('translate-y-36');
-        document.getElementById('cartCountBadge').textContent = totalCount;
-        document.getElementById('cartSummaryLabel').textContent = `${totalCount} DISH${totalCount > 1 ? 'ES' : ''} READY TO FIRE`;
-        document.getElementById('cartTotalLabel').textContent = `₹${subtotal}`;
+        cartBar.classList.remove('translate-y-32');
+        document.getElementById('cartItemSummary').textContent = `${totalCount} ITEM${totalCount > 1 ? 'S' : ''} IN TRAY`;
+        document.getElementById('cartTotalSummary').textContent = `₹${subtotal}`;
       } else {
-        dock.classList.add('translate-y-36');
+        cartBar.classList.add('translate-y-32');
       }
     }
 
-    function openOrderTraySheet() {
-      if (activeTray.length === 0) return;
-      renderTraySheetContents();
-      openSheet('orderTraySheet');
-    }
+    // ==========================================================
+    // CART MODAL & DISPATCH
+    // ==========================================================
+    function openCartModal() {
+      const listEl = document.getElementById('cartItemsList');
+      if (activeCart.length === 0) return;
 
-    function closeOrderTraySheet() {
-      closeSheet('orderTraySheet');
-    }
-
-    function renderTraySheetContents() {
-      const container = document.getElementById('trayItemsContainer');
       let subtotal = 0;
 
-      container.innerHTML = activeTray.map(t => {
-        const itemTotal = t.item.price * t.qty;
+      listEl.innerHTML = activeCart.map(c => {
+        const itemTotal = c.item.price * c.qty;
         subtotal += itemTotal;
 
-        const tags = [];
-        if (t.isJain) tags.push('Jain Prepped');
-        if (t.isLowOil) tags.push('Low Clarified Butter');
-        if (t.notes) tags.push(`"${t.notes}"`);
+        const mods = [];
+        if (c.spice) mods.push(c.spice);
+        if (c.jain) mods.push('Jain');
+        if (c.lessOil) mods.push('Less Oil');
+        if (c.notes) mods.push(`"${c.notes}"`);
 
         return `
           <div class="py-2.5 flex items-start justify-between">
-            <div class="flex-1 pr-2">
-              <h5 class="text-xs font-semibold text-bistro-ink">${t.item.name}</h5>
-              <div class="text-[9px] font-mono text-bistro-gold">${tags.join(' · ') || 'Chef Standard Prepped'}</div>
-              <span class="text-[11px] font-mono text-bistro-inkMuted">₹${t.item.price} each</span>
+            <div class="flex-1 pr-3">
+              <h5 class="text-sm font-medium text-bistro-ink">${c.item.name}</h5>
+              <div class="text-[10px] text-bistro-gold font-mono">${mods.join(' · ')}</div>
+              <span class="text-xs font-mono text-bistro-inkMuted">₹${c.item.price} each</span>
             </div>
 
-            <div class="flex items-center gap-2.5">
+            <div class="flex items-center gap-3">
               <div class="flex items-center bg-bistro-elevated border border-bistro-border rounded-lg px-2 py-0.5 text-xs">
-                <button onclick="adjustTrayQty('${t.item.id}', -1); renderTraySheetContents();" class="text-bistro-gold font-bold px-1">-</button>
-                <span class="font-mono px-2 text-bistro-ink text-xs">${t.qty}</span>
-                <button onclick="adjustTrayQty('${t.item.id}', 1); renderTraySheetContents();" class="text-bistro-gold font-bold px-1">+</button>
+                <button onclick="updateQty('${c.item.id}', -1); openCartModal();" class="text-bistro-gold font-bold px-1">-</button>
+                <span class="font-mono px-2 text-bistro-ink">${c.qty}</span>
+                <button onclick="updateQty('${c.item.id}', 1); openCartModal();" class="text-bistro-gold font-bold px-1">+</button>
               </div>
-              <span class="font-mono text-xs font-bold text-bistro-ink w-12 text-right">₹${itemTotal}</span>
+              <span class="font-mono text-xs font-semibold text-bistro-ink w-12 text-right">₹${itemTotal}</span>
             </div>
           </div>
         `;
@@ -945,71 +766,81 @@
       const gst = Math.round(subtotal * 0.05);
       const grandTotal = subtotal + gst;
 
-      document.getElementById('traySubtotal').textContent = `₹${subtotal}`;
-      document.getElementById('trayGST').textContent = `₹${gst}`;
-      document.getElementById('trayGrandTotal').textContent = `₹${grandTotal}`;
+      document.getElementById('billSubtotal').textContent = `₹${subtotal}`;
+      document.getElementById('billGST').textContent = `₹${gst}`;
+      document.getElementById('billGrandTotal').textContent = `₹${grandTotal}`;
+
+      document.getElementById('cartModal').classList.remove('hidden');
     }
 
-    function dispatchKOTToKitchen() {
-      if (activeTray.length === 0) return;
+    function closeCartModal() {
+      document.getElementById('cartModal').classList.add('hidden');
+    }
 
-      const roundNum = runningRounds.length + 1;
+    // DISPATCH TO KITCHEN KDS
+    function dispatchOrderToKitchen() {
+      if (activeCart.length === 0) return;
+
+      const roundNumber = runningOrders.length + 1;
       const now = new Date();
-      const timeStamp = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      const newRound = {
-        roundNum,
-        time: timeStamp,
-        items: JSON.parse(JSON.stringify(activeTray)),
-        subtotal: activeTray.reduce((acc, t) => acc + (t.item.price * t.qty), 0)
+      const roundOrder = {
+        round: roundNumber,
+        time: timeStr,
+        items: JSON.parse(JSON.stringify(activeCart)),
+        subtotal: activeCart.reduce((sum, c) => sum + (c.item.price * c.qty), 0)
       };
 
-      runningRounds.push(newRound);
+      runningOrders.push(roundOrder);
 
-      activeTray = [];
-      updateTrayDockUI();
-      closeOrderTraySheet();
+      // Clear active tray
+      activeCart = [];
+      updateCartUI();
+      closeCartModal();
       applyFilters();
 
-      const badge = document.getElementById('topRunningTabBadge');
-      badge.classList.remove('hidden');
-      badge.querySelector('span:nth-child(2)').textContent = `Round #${roundNum} Cooking`;
+      // Show Running Tab button in header
+      document.getElementById('runningOrderBtn').classList.remove('hidden');
 
-      triggerHaptic();
-      AudioEngine.playChime();
-      openPacingSheet();
+      // Open Running Tab confirmation
+      toggleRunningTab(true);
     }
 
-    function openPacingSheet() {
-      renderPlacedRounds();
-      openSheet('pacingSheet');
+    // ==========================================================
+    // RUNNING TAB & RE-ORDERING ("ROUND 2")
+    // ==========================================================
+    function toggleRunningTab(show) {
+      const modal = document.getElementById('runningTabModal');
+      if (show) {
+        renderRunningRounds();
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
     }
 
-    function closePacingSheet() {
-      closeSheet('pacingSheet');
-    }
+    function renderRunningRounds() {
+      const container = document.getElementById('runningRoundsList');
+      const headerInfo = document.getElementById('runningTabHeaderInfo');
+      headerInfo.textContent = `Table ${userSession.table} · ${runningOrders.length} Round(s) Cooking/Served`;
 
-    function renderPlacedRounds() {
-      const container = document.getElementById('placedRoundsList');
-      const subtitle = document.getElementById('pacingRoundsSubtitle');
-      subtitle.textContent = `${runningRounds.length} Active Course Sequence(s) on Pass`;
+      let total = 0;
 
-      let cumulative = 0;
-
-      container.innerHTML = runningRounds.map(rnd => {
-        cumulative += rnd.subtotal;
+      container.innerHTML = runningOrders.map(r => {
+        total += r.subtotal;
         return `
-          <div class="bg-bistro-elevated border border-bistro-border/60 rounded-2xl p-3 text-xs">
-            <div class="flex items-center justify-between pb-2 border-b border-bistro-border/30 text-[10px] font-mono text-bistro-gold">
-              <span class="font-bold uppercase tracking-wider">KOT TICKET #${rnd.roundNum}</span>
-              <span class="text-bistro-inkMuted">${rnd.time}</span>
+          <div class="bg-bistro-elevated border border-bistro-border/60 rounded-xl p-3 text-xs">
+            <div class="flex items-center justify-between pb-2 border-b border-bistro-border/30 text-[11px] font-mono text-bistro-gold">
+              <span class="font-bold">ROUND #${r.round} (KOT FIRED)</span>
+              <span class="text-bistro-inkMuted">${r.time}</span>
             </div>
-            <div class="divide-y divide-bistro-borderMuted py-1">
-              ${rnd.items.map(i => `
+            <div class="divide-y divide-bistro-border/20 py-1">
+              ${r.items.map(i => `
                 <div class="py-1.5 flex justify-between">
                   <div>
-                    <span class="text-bistro-ink font-medium">${i.qty}x${i.item.name}</span>
-                    <div class="text-[9px] font-mono text-bistro-inkMuted">${i.isJain ? 'Jain' : ''} ${i.isLowOil ? '· Low Ghee' : ''}</div>
+                    <span class="text-bistro-ink">${i.qty}x${i.item.name}</span>
+                    <div class="text-[10px] text-bistro-inkMuted">${i.spice} ${i.jain ? '· Jain' : ''} ${i.notes ? `· "${i.notes}"` : ''}</div>
                   </div>
                   <span class="font-mono text-bistro-inkSoft">₹${i.item.price * i.qty}</span>
                 </div>
@@ -1019,86 +850,36 @@
         `;
       }).join('');
 
-      const gst = Math.round(cumulative * 0.05);
-      const grandTotal = cumulative + gst;
-      document.getElementById('pacingCumulativeTotal').textContent = `₹${grandTotal} (Incl. GST)`;
+      const gst = Math.round(total * 0.05);
+      const grandTotal = total + gst;
+      document.getElementById('runningGrandTotal').textContent = `₹${grandTotal} (Incl. GST)`;
     }
 
-    function openBillSettlementSheet() {
-      closePacingSheet();
-      updateSplitMath();
-      openSheet('billSettlementSheet');
+    // ==========================================================
+    // BILLING & PAYMENT MODAL
+    // ==========================================================
+    function requestFinalBill() {
+      toggleRunningTab(false);
+      let total = runningOrders.reduce((sum, r) => sum + r.subtotal, 0);
+      let gst = Math.round(total * 0.05);
+      let grandTotal = total + gst;
+
+      document.getElementById('finalPayAmount').textContent = `Total Due: ₹${grandTotal}`;
+      document.getElementById('billPayModal').classList.remove('hidden');
     }
 
-    function closeBillSettlementSheet() {
-      closeSheet('billSettlementSheet');
-    }
-
-    function setTip(pct) {
-      selectedTipPercent = pct;
-      document.querySelectorAll('.tip-btn').forEach(btn => {
-        btn.classList.remove('bg-bistro-gold', 'text-[#120b09]', 'font-bold');
-        btn.classList.add('bg-bistro-elevated', 'border', 'border-bistro-borderMuted', 'text-bistro-inkMuted');
-      });
-      event.target.classList.add('bg-bistro-gold', 'text-[#120b09]', 'font-bold');
-      event.target.classList.remove('bg-bistro-elevated', 'border', 'border-bistro-borderMuted', 'text-bistro-inkMuted');
-      updateSplitMath();
-      triggerHaptic();
-    }
-
-    function updateSplitMath() {
-      const diners = parseInt(document.getElementById('splitSlider').value) || 1;
-      document.getElementById('splitDinerCount').textContent = `${diners} Guest${diners > 1 ? 's' : ''}`;
-
-      let baseTotal = runningRounds.reduce((acc, r) => acc + r.subtotal, 0);
-      let gst = Math.round(baseTotal * 0.05);
-      let tip = Math.round(baseTotal * (selectedTipPercent / 100));
-      let totalDue = baseTotal + gst + tip;
-
-      let perHead = Math.ceil(totalDue / diners);
-
-      document.getElementById('splitPerHeadAmount').textContent = `₹${perHead} / guest`;
-
-      const upiUrl = `upi://pay?pa=thespicebistro@icici&pn=TheSpiceBistro&am=${perHead}&cu=INR&tn=Table_${session.table}`;
-      document.getElementById('upiQRCodeImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upiUrl)}`;
-    }
-
-    function notifyCashierCash() {
-      alert(`Card Terminal & Physical Bill summoned to Table ${session.table}! Your floor captain is en route.`);
-      triggerHaptic();
-    }
-
-    function finishDiningExperience() {
-      alert(`Gratitude for dining with us at The Spice Bistro, ${session.guestName}. Have an exceptional evening!`);
-      closeBillSettlementSheet();
-      runningRounds = [];
-      activeTray = [];
-      document.getElementById('topRunningTabBadge').classList.add('hidden');
-      updateTrayDockUI();
+    function resetAndCloseAll() {
+      alert('Thank you for dining at The Spice Bistro! Have a wonderful day.');
+      document.getElementById('billPayModal').classList.add('hidden');
+      runningOrders = [];
+      activeCart = [];
+      document.getElementById('runningOrderBtn').classList.add('hidden');
+      updateCartUI();
       applyFilters();
     }
 
-    function openButlerSheet() { openSheet('butlerSheet'); }
-    function closeButlerSheet() { closeSheet('butlerSheet'); }
-
-    function summonButlerRequest(type) {
-      alert(`[Floor Pager Dispatched]: "${type}" paged for Table ${session.table}.`);
-      closeButlerSheet();
-      triggerHaptic();
-    }
-
-    function openSheet(id) {
-      const el = document.getElementById(id);
-      el.classList.remove('sheet-closed');
-      el.classList.add('sheet-open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeSheet(id) {
-      const el = document.getElementById(id);
-      el.classList.remove('sheet-open');
-      el.classList.add('sheet-closed');
-      document.body.style.overflow = '';
+    function callServer() {
+      alert(`Server paged for Table ${userSession.table}! Someone will be at your table shortly.`);
     }
   </script>
 </body>
