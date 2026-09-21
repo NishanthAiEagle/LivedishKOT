@@ -59,16 +59,28 @@
   * {
     -webkit-tap-highlight-color: transparent;
     box-sizing: border-box;
-    touch-action: manipulation;
   }
   body {
     background-color: #070505;
     color: #fbf7ee;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    user-select: none;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
+  
+  /* CRITICAL FIX: Ensure inputs are always editable, clickable and focusable */
+  input, textarea, select {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    touch-action: auto !important;
+    pointer-events: auto !important;
+  }
+
+  button {
+    touch-action: manipulation;
+    cursor: pointer;
+  }
+
   .hide-scroll::-webkit-scrollbar { display: none; }
   .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -92,16 +104,6 @@
   }
   .sheet-closed .sheet-drawer {
     transform: translateY(100%);
-  }
-
-  /* Ambient Foil Glow */
-  .gold-gradient-text {
-    background: linear-gradient(135deg, #f6e4b8 0%, #d4af37 55%, #aa8018 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .gold-border-gradient {
-    border-image: linear-gradient(to bottom right, #f6e4b8, #d4af37, #3e0e17) 1;
   }
 </style>
 </head>
@@ -143,8 +145,8 @@
       </div>
     </header>
 
-    <!-- STEP 0: SEAMLESS QR ONBOARDING OVERLAY -->
-    <div id="onboardingScreen" class="fixed inset-0 z-50 bg-bistro-bg flex flex-col justify-center px-6 max-w-md mx-auto">
+    <!-- STEP 0: ONBOARDING SCREEN -->
+    <div id="onboardingScreen" class="fixed inset-0 z-50 bg-bistro-bg flex flex-col justify-center px-6 max-w-md mx-auto pointer-events-auto">
       <div class="text-center mb-7 relative z-10">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-bistro-gold/40 text-[10px] font-mono tracking-widest text-bistro-gold uppercase mb-3 bg-bistro-goldPale">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Dine-In Concierge
@@ -155,29 +157,29 @@
         </p>
       </div>
 
-      <div class="relative z-10 space-y-4 bg-bistro-card border border-bistro-border p-5 rounded-3xl shadow-2xl backdrop-blur-xl">
+      <form onsubmit="handleSessionSubmit(event)" class="relative z-10 space-y-4 bg-bistro-card border border-bistro-border p-5 rounded-3xl shadow-2xl backdrop-blur-xl">
         <div>
-          <label class="block text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Detected Table</label>
+          <label for="inputTable" class="block text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Detected Table</label>
           <div class="relative">
-            <input type="text" id="inputTable" value="T-04" class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-4 py-2.5 text-xs text-bistro-gold font-mono font-medium focus:border-bistro-gold outline-none">
-            <span class="absolute right-3.5 top-2.5 text-[9px] text-emerald-400 font-mono tracking-wide">AUTO-SYNCED</span>
+            <input type="text" id="inputTable" value="T-04" class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-4 py-3 text-xs text-bistro-gold font-mono font-medium focus:border-bistro-gold outline-none relative z-20">
+            <span class="absolute right-3.5 top-3.5 text-[9px] text-emerald-400 font-mono tracking-wide pointer-events-none z-30">AUTO-SYNCED</span>
           </div>
         </div>
 
         <div>
-          <label class="block text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Lead Guest Name</label>
-          <input type="text" id="inputName" placeholder="e.g. Vikramaditya" class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-4 py-2.5 text-xs text-bistro-ink placeholder:text-bistro-inkMuted/60 focus:border-bistro-gold outline-none">
+          <label for="inputName" class="block text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Lead Guest Name</label>
+          <input type="text" id="inputName" placeholder="e.g. Vikramaditya" required class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-4 py-3 text-xs text-bistro-ink placeholder:text-bistro-inkMuted/60 focus:border-bistro-gold outline-none relative z-20">
         </div>
 
         <div>
-          <label class="block text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Mobile Phone (WhatsApp Bill)</label>
-          <input type="tel" id="inputPhone" placeholder="10-digit mobile number" class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-4 py-2.5 text-xs text-bistro-ink placeholder:text-bistro-inkMuted/60 focus:border-bistro-gold outline-none">
+          <label for="inputPhone" class="block text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Mobile Phone (WhatsApp Bill)</label>
+          <input type="tel" id="inputPhone" placeholder="10-digit mobile number" class="w-full bg-bistro-elevated border border-bistro-border rounded-xl px-4 py-3 text-xs text-bistro-ink placeholder:text-bistro-inkMuted/60 focus:border-bistro-gold outline-none relative z-20">
         </div>
 
-        <button onclick="startSession()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-bistro-gold to-[#aa8018] text-[#120b09] font-semibold text-xs tracking-wider uppercase shadow-gold-glow active:scale-98 transition-transform mt-2">
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-bistro-gold to-[#aa8018] text-[#120b09] font-semibold text-xs tracking-wider uppercase shadow-gold-glow active:scale-98 transition-transform mt-2 relative z-20">
           Open Digital Carte du Jour →
         </button>
-      </div>
+      </form>
       <p class="text-center text-[10px] text-bistro-inkMuted font-mono mt-6">Instant KOT dispatch · Zero app installation required</p>
     </div>
 
@@ -257,12 +259,10 @@
           </button>
         </div>
 
-        <!-- Terroir Story & Description -->
         <p id="sheetDishDesc" class="text-xs text-bistro-inkSoft leading-relaxed py-3 border-b border-bistro-borderMuted">
           Culinary description and ingredient story.
         </p>
 
-        <!-- 360° Sensory Profile Radar -->
         <div class="py-3 border-b border-bistro-borderMuted space-y-2">
           <span class="text-[10px] font-mono uppercase tracking-widest text-bistro-gold block">Flavor Architecture</span>
           <div class="grid grid-cols-3 gap-2 text-center text-xs">
@@ -281,7 +281,6 @@
           </div>
         </div>
 
-        <!-- Sommelier Cellar Pairing Spotlight -->
         <div class="py-3 border-b border-bistro-borderMuted">
           <div class="flex items-center justify-between mb-2">
             <span class="text-[10px] font-mono uppercase tracking-widest text-bistro-gold">Sommelier Pairing</span>
@@ -301,7 +300,6 @@
           </div>
         </div>
 
-        <!-- Chef Cooking Directives -->
         <div class="py-3 space-y-3">
           <div>
             <label class="block text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted mb-1.5">Dietary Preparation</label>
@@ -345,12 +343,10 @@
           </button>
         </div>
 
-        <!-- Scrollable Itemized Cart -->
         <div id="trayItemsContainer" class="py-3 space-y-3 flex-1 overflow-y-auto hide-scroll divide-y divide-bistro-borderMuted">
           <!-- Populated by JS -->
         </div>
 
-        <!-- Bill Calculations -->
         <div class="border-t border-bistro-border/40 pt-3 space-y-1.5 text-xs text-bistro-inkSoft">
           <div class="flex justify-between font-mono">
             <span>Course Subtotal</span>
@@ -366,7 +362,6 @@
           </div>
         </div>
 
-        <!-- KOT Dispatch Trigger -->
         <button onclick="dispatchKOTToKitchen()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-bistro-gold via-[#e5c05c] to-[#aa8018] text-[#120b09] font-bold text-xs tracking-wider uppercase shadow-gold-glow active:scale-98 transition-transform mt-3 flex items-center justify-center gap-2">
           <span>🔥 Dispatch KOT to Kitchen Pass</span>
         </button>
@@ -387,7 +382,6 @@
           <p id="pacingRoundsSubtitle" class="text-[10px] text-bistro-inkMuted font-mono">1 Active Round in Hot Sigri Prep</p>
         </div>
 
-        <!-- Live Kitchen Status Stepper -->
         <div class="py-3 px-2 border-b border-bistro-borderMuted">
           <div class="flex items-center justify-between text-[9px] font-mono text-bistro-inkMuted mb-1.5">
             <span class="text-bistro-gold font-bold">1. Fired</span>
@@ -400,7 +394,6 @@
           </div>
         </div>
 
-        <!-- Rendered Placed Rounds -->
         <div id="placedRoundsList" class="flex-1 overflow-y-auto hide-scroll py-3 space-y-3">
           <!-- Populated by JS -->
         </div>
@@ -434,7 +427,6 @@
           <p class="text-[10px] text-bistro-inkMuted font-mono">Table T-04 · Tax Invoice & Splitter</p>
         </div>
 
-        <!-- Interactive Diner Split Slider -->
         <div class="py-3 border-b border-bistro-borderMuted">
           <div class="flex justify-between items-center mb-1">
             <span class="text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted">Split Between Diners</span>
@@ -443,7 +435,6 @@
           <input type="range" id="splitSlider" min="1" max="8" value="1" oninput="updateSplitMath()" class="w-full accent-bistro-gold">
         </div>
 
-        <!-- Gratuity Selection -->
         <div class="py-3 border-b border-bistro-borderMuted">
           <span class="text-[10px] font-mono uppercase tracking-wider text-bistro-inkMuted block mb-2">Butler & Kitchen Gratuity</span>
           <div class="grid grid-cols-4 gap-2 text-xs font-mono text-center">
@@ -454,7 +445,6 @@
           </div>
         </div>
 
-        <!-- Dynamic QR Code Presentation -->
         <div class="py-4 text-center">
           <div class="bg-white p-3 rounded-2xl inline-block shadow-2xl mb-2">
             <img id="upiQRCodeImage" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=thespicebistro@icici&pn=TheSpiceBistro&am=0&cu=INR" alt="UPI QR" class="w-36 h-36 mx-auto">
@@ -506,11 +496,8 @@
 
   </div>
 
-  <!-- JAVASCRIPT ARCHITECTURE -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
-    // ==========================================================
-    // AUDIO SYNTHESIZER (No external audio files needed)
-    // ==========================================================
     const AudioEngine = {
       ctx: null,
       init() {
@@ -528,12 +515,12 @@
           const gain = this.ctx.createGain();
 
           osc1.type = 'sine';
-          osc1.frequency.setValueAtTime(587.33, this.ctx.currentTime); // D5
-          osc1.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.35); // A5
+          osc1.frequency.setValueAtTime(587.33, this.ctx.currentTime);
+          osc1.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.35);
 
           osc2.type = 'triangle';
           osc2.frequency.setValueAtTime(880, this.ctx.currentTime);
-          osc2.frequency.exponentialRampToValueAtTime(1174.66, this.ctx.currentTime + 0.35); // D6
+          osc2.frequency.exponentialRampToValueAtTime(1174.66, this.ctx.currentTime + 0.35);
 
           gain.gain.setValueAtTime(0.01, this.ctx.currentTime);
           gain.gain.linearRampToValueAtTime(0.2, this.ctx.currentTime + 0.05);
@@ -553,9 +540,6 @@
       }
     };
 
-    // ==========================================================
-    // CULINARY DATA MODEL (Michelin Indian Gastronomy)
-    // ==========================================================
     const GASTRONOMY_MENU = [
       {
         id: 'st-01',
@@ -694,25 +678,18 @@
       }
     ];
 
-    // ==========================================================
-    // STATE REPOSITORY
-    // ==========================================================
     let session = {
       table: 'T-04',
       guestName: '',
       phone: ''
     };
 
-    let activeTray = []; // [{ item, qty, isJain, isLowOil, notes }]
-    let runningRounds = []; // [{ roundNum, time, items, subtotal }]
+    let activeTray = [];
+    let runningRounds = [];
     let selectedTipPercent = 10;
     let inspectingDish = null;
 
-    // ==========================================================
-    // LIFECYCLE & INITIALIZATION
-    // ==========================================================
     window.addEventListener('DOMContentLoaded', () => {
-      // Auto-extract URL table param if present (e.g. ?table=T-12)
       const params = new URLSearchParams(window.location.search);
       const urlTable = params.get('table');
       if (urlTable) {
@@ -721,6 +698,11 @@
       }
       renderMenuFeed(GASTRONOMY_MENU);
     });
+
+    function handleSessionSubmit(e) {
+      if (e) e.preventDefault();
+      startSession();
+    }
 
     function startSession() {
       const table = document.getElementById('inputTable').value.trim() || 'T-04';
@@ -743,9 +725,6 @@
       }
     }
 
-    // ==========================================================
-    // MENU RENDERING & FILTERING
-    // ==========================================================
     let activeCategory = 'all';
 
     function setCategory(cat) {
@@ -786,7 +765,6 @@
 
         return `
           <div class="bg-bistro-card border border-bistro-border/60 rounded-2xl p-4 flex gap-3 relative overflow-hidden transition-all shadow-sm">
-            <!-- Left Narrative -->
             <div class="flex-1 flex flex-col justify-between" onclick="openDishDetailSheet('${dish.id}')">
               <div>
                 <div class="flex items-center gap-1.5 mb-1.5">
@@ -807,7 +785,6 @@
               </div>
             </div>
 
-            <!-- Right Stepper / Add Action -->
             <div class="flex flex-col justify-end items-end w-20">
               ${qty === 0 ? `
                 <button onclick="openDishDetailSheet('${dish.id}')" class="w-full py-2 rounded-xl bg-bistro-elevated border border-bistro-border/60 text-bistro-gold text-xs font-mono font-semibold active:scale-95 transition-all shadow-sm">
@@ -827,15 +804,11 @@
       }).join('');
     }
 
-    // ==========================================================
-    // DISH DETAIL & 360° SENSORY SHEET CONTROLS
-    // ==========================================================
     function openDishDetailSheet(dishId) {
       const dish = GASTRONOMY_MENU.find(d => d.id === dishId);
       if (!dish) return;
       inspectingDish = dish;
 
-      // Fill sheet values
       document.getElementById('sheetDishName').textContent = dish.name;
       document.getElementById('sheetDishPrice').textContent = `₹${dish.price}`;
       document.getElementById('sheetDishDesc').textContent = dish.desc;
@@ -898,9 +871,6 @@
       triggerHaptic();
     }
 
-    // ==========================================================
-    // TRAY MANAGEMENT & STICKY DOCK
-    // ==========================================================
     function adjustTrayQty(dishId, delta) {
       const idx = activeTray.findIndex(t => t.item.id === dishId);
       if (idx > -1) {
@@ -929,9 +899,6 @@
       }
     }
 
-    // ==========================================================
-    // ORDER TRAY SHEET (REVIEW & KOT DISPATCH)
-    // ==========================================================
     function openOrderTraySheet() {
       if (activeTray.length === 0) return;
       renderTraySheetContents();
@@ -999,13 +966,11 @@
 
       runningRounds.push(newRound);
 
-      // Clear tray
       activeTray = [];
       updateTrayDockUI();
       closeOrderTraySheet();
       applyFilters();
 
-      // Show live badge
       const badge = document.getElementById('topRunningTabBadge');
       badge.classList.remove('hidden');
       badge.querySelector('span:nth-child(2)').textContent = `Round #${roundNum} Cooking`;
@@ -1015,9 +980,6 @@
       openPacingSheet();
     }
 
-    // ==========================================================
-    // PACING & ROUND 2 ENGINE
-    // ==========================================================
     function openPacingSheet() {
       renderPlacedRounds();
       openSheet('pacingSheet');
@@ -1062,9 +1024,6 @@
       document.getElementById('pacingCumulativeTotal').textContent = `₹${grandTotal} (Incl. GST)`;
     }
 
-    // ==========================================================
-    // BILL SPLITTER, GRATUITY & DYNAMIC UPI CHECKOUT
-    // ==========================================================
     function openBillSettlementSheet() {
       closePacingSheet();
       updateSplitMath();
@@ -1100,7 +1059,6 @@
 
       document.getElementById('splitPerHeadAmount').textContent = `₹${perHead} / guest`;
 
-      // Update Live UPI QR
       const upiUrl = `upi://pay?pa=thespicebistro@icici&pn=TheSpiceBistro&am=${perHead}&cu=INR&tn=Table_${session.table}`;
       document.getElementById('upiQRCodeImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upiUrl)}`;
     }
@@ -1120,9 +1078,6 @@
       applyFilters();
     }
 
-    // ==========================================================
-    // DISCREET BUTLER SUMMONER
-    // ==========================================================
     function openButlerSheet() { openSheet('butlerSheet'); }
     function closeButlerSheet() { closeSheet('butlerSheet'); }
 
@@ -1132,9 +1087,6 @@
       triggerHaptic();
     }
 
-    // ==========================================================
-    // SHEET UTILITIES (Native Transitions)
-    // ==========================================================
     function openSheet(id) {
       const el = document.getElementById(id);
       el.classList.remove('sheet-closed');
