@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#040204]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>The Spice Bistro — 7-Star International Haute Gastronomy</title>
+  
+  <!-- Luxury Editorial Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bistro: {
+              void: '#030204',
+              obsidian: '#070407',
+              surface: '#0f0910',
+              elevated: '#170e19',
+              gold: '#d8b26a',
+              goldLight: '#f6e2b8',
+              goldDim: '#9b7a38',
+              velvet: '#5c1322',
+              velvetDark: '#360912',
+              emerald: '#00f59b',
+              flame: '#ff4d2e',
+              border: 'rgba(216, 178, 106, 0.16)'
+            }
+          },
+          fontFamily: {
+            cinzel: ['"Cinzel"', 'serif'],
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    body {
+      background: #030204;
+      color: #f6e2b8;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    .hide-scroll::-webkit-scrollbar { display: none; }
+    .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* 7-Star Glassmorphism */
+    .glass-card {
+      background: linear-gradient(135deg, rgba(23, 14, 25, 0.78) 0%, rgba(11, 7, 12, 0.88) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(216, 178, 106, 0.18);
+    }
+    .glass-panel-elevated {
+      background: linear-gradient(135deg, rgba(30, 18, 32, 0.94) 0%, rgba(15, 9, 16, 0.98) 100%);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(216, 178, 106, 0.28);
+    }
+
+    /* Subtle Animated Gold Hairline Sheen */
+    @keyframes goldGlint {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .gold-sheen-bar {
+      background: linear-gradient(90deg, transparent 0%, rgba(246, 226, 184, 0.35) 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: goldGlint 6s infinite linear;
+    }
+
+    /* Ambient Breathing Glows */
+    @keyframes beaconBreathe {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 20px -2px rgba(216, 178, 106, 0.45), 0 0 45px -8px rgba(92, 19, 34, 0.6); }
+      50% { transform: scale(1.05); box-shadow: 0 0 35px 4px rgba(216, 178, 106, 0.75), 0 0 60px 0px rgba(92, 19, 34, 0.85); }
+    }
+    .beacon-glow { animation: beaconBreathe 3.4s infinite ease-in-out; }
+
+    /* Haptic Press Response */
+    .haptic-click:active {
+      transform: scale(0.96);
+      filter: brightness(1.15);
+      transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Sheet animations */
+    .sheet-spring-up {
+      animation: springUp 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes springUp {
+      from { transform: translateY(105%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Culinary Animation 1: Tandoor Embers Flare */
+    @keyframes emberFlare {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 4px #ff5722); opacity: 0.9; }
+      50% { transform: scale(1.18); filter: drop-shadow(0 0 12px #ff9800); opacity: 1; }
+    }
+    .anim-ember { animation: emberFlare 1.8s infinite ease-in-out; }
+
+    /* Culinary Animation 2: Sauté Steam Wisps */
+    @keyframes steamDrift {
+      0% { transform: translateY(0) scale(0.9); opacity: 0.4; }
+      50% { transform: translateY(-4px) scale(1.1); opacity: 0.85; }
+      100% { transform: translateY(-8px) scale(1.2); opacity: 0; }
+    }
+    .anim-steam { animation: steamDrift 2.2s infinite ease-in-out; }
+
+    /* Culinary Animation 3: Dum Simmer Rings */
+    @keyframes aromaPulse {
+      0% { transform: scale(0.85); opacity: 0.8; }
+      50% { transform: scale(1.25); opacity: 0.2; }
+      100% { transform: scale(0.85); opacity: 0.8; }
+    }
+    .anim-aroma { animation: aromaPulse 2.6s infinite ease-in-out; }
+
+    /* Culinary Animation 4: Gold Plating Twinkle */
+    @keyframes goldTwinkle {
+      0%, 100% { transform: rotate(0deg) scale(0.9); filter: drop-shadow(0 0 2px #d8b26a); }
+      50% { transform: rotate(180deg) scale(1.25); filter: drop-shadow(0 0 10px #f6e2b8); }
+    }
+    .anim-twinkle { animation: goldTwinkle 3s infinite linear; }
+
+    /* Kitchen Telemetry: Floating Ember Particles */
+    @keyframes emberRise {
+      0% { transform: translateY(0) scale(0.6); opacity: 0; }
+      15% { opacity: 1; }
+      100% { transform: translateY(-46px) scale(1.15); opacity: 0; }
+    }
+    .ember-particle {
+      position: absolute;
+      bottom: 2px;
+      width: 4px;
+      height: 4px;
+      border-radius: 9999px;
+      background: radial-gradient(circle, #ffcf7a, #ff6a00);
+      box-shadow: 0 0 6px 1px rgba(255, 152, 0, 0.85);
+      animation: emberRise 2.4s infinite ease-in;
+      pointer-events: none;
+    }
+
+    /* Kitchen Telemetry: Shimmer Sweep Overlay for Progress Bars */
+    @keyframes shimmerSweep {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(120%); }
+    }
+    .shimmer-sweep {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%);
+      animation: shimmerSweep 1.6s infinite linear;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    /* Kitchen Telemetry: Glowing Ring Around Active Dish Status Icons */
+    @keyframes iconRingPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(216,178,106,0.45); }
+      50% { box-shadow: 0 0 0 6px rgba(216,178,106,0); }
+    }
+    .icon-ring {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 9999px;
+      background: rgba(216,178,106,0.1);
+      border: 1px solid rgba(216,178,106,0.3);
+      animation: iconRingPulse 1.8s infinite ease-out;
+      flex-shrink: 0;
+    }
+
+    /* AR Model Viewer Styling */
+    model-viewer {
+      --poster-color: transparent;
+      background: radial-gradient(circle at 50% 40%, rgba(216,178,106,0.08) 0%, rgba(3,2,4,0.9) 70%);
+    }
+    .ar-launch-btn {
+      background: linear-gradient(90deg, #d8b26a, #f6e2b8, #d8b26a);
+      color: #030204;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 10px 18px;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 0 20px rgba(216,178,106,0.35);
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center bg-bistro-void text-bistro-goldLight pb-32">
+
+  <!-- Mobile Max Device Container -->
+  <div class="w-full max-w-md min-h-screen flex flex-col relative bg-bistro-void border-x border-bistro-border/30 overflow-x-hidden shadow-[0_0_100px_rgba(0,0,0,0.9)]">
+
+    <canvas id="ambientGoldCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- Top Luxury Suite HUD Header -->
+    <header class="sticky top-0 z-40 glass-card border-b border-bistro-border/40 px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-bistro-velvet to-bistro-surface border border-bistro-gold/40 flex items-center justify-center shadow-lg shadow-bistro-velvet/40">
+          <span class="font-cinzel text-lg font-bold text-bistro-gold tracking-tight">SB</span>
+          <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-bistro-emerald border-2 border-bistro-void animate-pulse"></span>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-[9px] font-mono tracking-widest text-bistro-gold uppercase font-bold px-1.5 py-0.5 rounded bg-bistro-gold/10 border border-bistro-gold/20">7-STAR PRIVATE SUITE</span>
+          </div>
+          <h1 class="font-cinzel text-xs font-bold tracking-widest text-bistro-goldLight uppercase mt-0.5">ALCOVE SALON IV</h1>
+        </div>
+      </div>
+
+      <!-- Header Utilities: Dedicated Bill Folio (🧾) & Live Pass Status -->
+      <div class="flex items-center gap-2">
+        <button onclick="openKitchenFolioModal()" id="hudCookingIndicator" class="haptic-click px-2.5 py-1.5 rounded-xl bg-bistro-surface/90 border border-bistro-gold/30 text-[10px] font-mono text-bistro-gold flex items-center gap-1.5" title="Live Kitchen Line Update">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="hudCookingLabel">3 DISHES ON PASS</span>
+        </button>
+
+        <!-- DEDICATED BILL FOLIO ICON -->
+        <button onclick="openBillFolioModal()" class="haptic-click p-2 rounded-xl bg-bistro-surface border border-bistro-gold/50 text-bistro-gold hover:border-bistro-goldLight hover:bg-bistro-gold/10 flex items-center justify-center shadow-lg relative" title="View Table Bill Folio">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z"/></svg>
+          <span id="folioCountBadge" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-bistro-velvet border border-bistro-gold/60 text-[9px] font-mono font-bold flex items-center justify-center text-bistro-goldLight">3</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="sticky top-[58px] z-30 bg-[#070408]/95 backdrop-blur-md border-b border-bistro-border/30 px-3 py-2 flex items-center justify-between text-xs">
+      <div class="flex items-center gap-1.5 overflow-x-auto hide-scroll py-0.5">
+        <span class="text-[9px] font-mono uppercase tracking-widest text-bistro-gold font-bold shrink-0 mr-1 flex items-center gap-1">
+          <span>🛡️ DIETARY SHIELD:</span>
+        </span>
+        <button onclick="toggleDietShield('satvik')" id="shieldBtnSatvik" class="haptic-click px-2.5 py-1 rounded-full text-[10px] font-mono border border-bistro-border bg-bistro-surface text-bistro-goldLight/70 flex items-center gap-1 shrink-0 transition-all">
+          <span>🌿 Satvik (Jain)</span>
+        </button>
+        <button onclick="toggleDietShield('glutenFree')" id="shieldBtnGluten" class="haptic-click px-2.5 py-1 rounded-full text-[10px] font-mono border border-bistro-border bg-bistro-surface text-bistro-goldLight/70 flex items-center gap-1 shrink-0 transition-all">
+          <span>🌾 Gluten-Free</span>
+        </button>
+        <button onclick="toggleDietShield('keto')" id="shieldBtnKeto" class="haptic-click px-2.5 py-1 rounded-full text-[10px] font-mono border border-bistro-border bg-bistro-surface text-bistro-goldLight/70 flex items-center gap-1 shrink-0 transition-all">
+          <span>🥩 Keto Tandoor</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN SCROLLABLE APP BODY -->
+    <main class="flex-1 relative z-10 p-4 space-y-4">
+
+      <section class="glass-card rounded-3xl p-4 border border-bistro-gold/40 relative overflow-hidden group shadow-[0_0_35px_rgba(216,178,106,0.12)]">
+        <div class="gold-sheen-bar absolute top-0 left-0 right-0 h-1"></div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-bistro-velvet to-bistro-velvetDark border border-bistro-gold/40 text-[9px] font-mono tracking-widest uppercase text-bistro-goldLight font-bold">
+            👑 CHEF'S DEGUSTATION FLIGHT
+          </span>
+          <span class="text-[10px] font-mono text-bistro-gold font-semibold">+ SAVE 18% AOV</span>
+        </div>
+        
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex-1">
+            <h2 class="font-cinzel text-lg font-bold text-bistro-goldLight leading-tight">Royal Awadhi Grand Degustation</h2>
+            <p class="text-xs text-bistro-goldLight/75 mt-1 font-light leading-relaxed">
+              Curated 3-Course Sommelier Flight: <span class="text-bistro-gold font-medium">Zafrani Paneer Mille-Feuille</span>, <span class="text-bistro-gold font-medium">24K Dal Bukhara</span> &amp; <span class="text-bistro-gold font-medium">Shahi Tukda 24K</span> with vintage pairings.
+            </p>
+            <div class="flex items-center gap-2 mt-2 text-[10px] font-mono text-bistro-goldLight/60">
+              <span>⏱️ Course Cadence: 45 Mins</span>
+            </div>
+          </div>
+          <div class="flex flex-col items-end justify-between self-stretch shrink-0">
+            <div class="text-right">
+              <span class="text-[10px] font-mono line-through text-bistro-goldLight/40 block">₹1,740</span>
+              <span class="font-mono text-lg font-bold text-bistro-gold">₹1,420</span>
+            </div>
+            <button onclick="addTastingFlightToCart()" class="haptic-click px-3.5 py-2 rounded-xl bg-gradient-to-r from-bistro-gold via-[#e9c788] to-bistro-gold text-bistro-void font-cinzel font-bold text-[11px] tracking-wider uppercase shadow-lg shadow-bistro-gold/20 mt-2">
+              + STAGE FLIGHT
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-2">
+        <div class="flex items-center justify-between text-xs px-1">
+          <span class="font-mono text-[10px] uppercase tracking-widest text-bistro-gold font-bold">HAUTE GASTRONOMY CHAPTERS</span>
+          <span class="text-[10px] font-mono text-bistro-goldLight/50" id="dishCountLabel">20 DISHES TOTAL</span>
+        </div>
+        <div class="flex items-center gap-2 overflow-x-auto hide-scroll pb-1">
+          <button onclick="filterChapter('all')" class="chapter-btn active px-3.5 py-1.5 rounded-full text-xs font-mono font-medium whitespace-nowrap bg-bistro-gold text-bistro-void shadow transition-all">ALL CHAPTERS</button>
+          <button onclick="filterChapter('ch1')" class="chapter-btn px-3.5 py-1.5 rounded-full text-xs font-mono font-medium whitespace-nowrap bg-bistro-surface border border-bistro-border text-bistro-goldLight/80 hover:text-bistro-goldLight transition-all">I: STARTERS</button>
+          <button onclick="filterChapter('ch2')" class="chapter-btn px-3.5 py-1.5 rounded-full text-xs font-mono font-medium whitespace-nowrap bg-bistro-surface border border-bistro-border text-bistro-goldLight/80 hover:text-bistro-goldLight transition-all">II: THE BHATTHI</button>
+          <button onclick="filterChapter('ch3')" class="chapter-btn px-3.5 py-1.5 rounded-full text-xs font-mono font-medium whitespace-nowrap bg-bistro-surface border border-bistro-border text-bistro-goldLight/80 hover:text-bistro-goldLight transition-all">III: IMPERIAL CURRIES</button>
+          <button onclick="filterChapter('ch4')" class="chapter-btn px-3.5 py-1.5 rounded-full text-xs font-mono font-medium whitespace-nowrap bg-bistro-surface border border-bistro-border text-bistro-goldLight/80 hover:text-bistro-goldLight transition-all">IV: DUM BIRYANI & BREADS</button>
+          <button onclick="filterChapter('ch5')" class="chapter-btn px-3.5 py-1.5 rounded-full text-xs font-mono font-medium whitespace-nowrap bg-bistro-surface border border-bistro-border text-bistro-goldLight/80 hover:text-bistro-goldLight transition-all">V: SWEET ALCHEMY</button>
+        </div>
+      </section>
+
+      <section id="dishesMatrix" class="space-y-3.5">
+        <!-- Rendered dynamically by JavaScript -->
+      </section>
+    </main>
+
+    <div id="stagingCartDock" class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-40 p-3 bg-gradient-to-t from-bistro-void via-bistro-void/95 to-transparent transition-transform translate-y-48">
+      <div class="glass-panel-elevated rounded-2xl p-3.5 shadow-[0_0_40px_rgba(216,178,106,0.28)] border border-bistro-gold/50 flex flex-col gap-2.5">
+        <div class="flex items-center justify-between">
+          <div class="cursor-pointer" onclick="openCartReviewSheet()">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-bistro-gold animate-ping"></span>
+              <span class="text-[10px] font-mono text-bistro-gold uppercase font-bold tracking-wider" id="cartStagingCount">0 DISHES STAGED</span>
+            </div>
+            <span class="text-lg font-bold font-mono text-bistro-goldLight" id="cartStagingTotal">₹0</span>
+          </div>
+
+          <button onclick="openCartReviewSheet()" class="haptic-click px-5 py-2.5 rounded-xl bg-gradient-to-r from-bistro-gold to-[#f6e2b8] text-bistro-void font-cinzel font-bold text-xs tracking-wider uppercase shadow-md flex items-center gap-1.5">
+            <span>REVIEW & DISPATCH</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="ambientLivingPill" class="fixed bottom-3 left-4 max-w-[240px] z-30 glass-card border border-bistro-gold/40 rounded-full px-3.5 py-2 shadow-xl flex items-center gap-2 cursor-pointer haptic-click hover:border-bistro-gold transition-all" onclick="openKitchenFolioModal()">
+      <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping shrink-0"></span>
+      <div class="truncate">
+        <span class="text-[10px] font-mono font-bold text-bistro-gold block leading-tight">🔥 IN KITCHEN PREP</span>
+        <span class="text-[9px] text-bistro-goldLight/70 font-mono truncate block" id="ambientPillSub">3 dishes cooking on embers</span>
+      </div>
+    </div>
+
+    <div class="fixed bottom-3 right-4 z-40">
+      <button onclick="toggleButlerModal(true)" class="haptic-click w-14 h-14 rounded-full bg-gradient-to-br from-bistro-velvet via-[#290d14] to-bistro-obsidian border-2 border-bistro-gold flex items-center justify-center beacon-glow relative" title="Royal Butler Compass Beacon" aria-label="Royal Butler Service">
+        <span class="text-2xl">🔔</span>
+        <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-bistro-gold opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-bistro-gold border border-black text-[8px] font-bold text-black items-center justify-center">IV</span>
+        </span>
+      </button>
+    </div>
+
+    <div id="kitchenStatusModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 max-w-md mx-auto">
+      <div class="glass-panel-elevated w-full rounded-3xl p-5 sheet-spring-up max-h-[92vh] flex flex-col relative shadow-[0_0_80px_rgba(0,0,0,0.95)]">
+        <!-- Close Button -->
+        <button onclick="closeKitchenFolioModal()" class="haptic-click absolute right-4 top-4 w-8 h-8 rounded-full bg-bistro-surface border border-bistro-border text-bistro-gold flex items-center justify-center hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+
+        <div class="text-left pb-3 border-b border-bistro-border/40">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-bistro-emerald/10 text-bistro-emerald font-mono text-[9px] tracking-wider uppercase border border-bistro-emerald/30 mb-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-bistro-emerald animate-ping"></span> LIVE CHEF PASS TELEMETRY
+          </span>
+          <h3 class="font-cinzel text-xl font-bold text-bistro-goldLight">Table Master Folio</h3>
+          <p class="text-[11px] text-bistro-goldLight/60 font-mono">Alcove Suite IV · Executive Chef Raghav</p>
+        </div>
+
+        <!-- Master Flight Progress Header with Timer -->
+        <div class="my-3 p-3 rounded-2xl bg-bistro-surface/90 border border-bistro-border/60 relative overflow-hidden">
+          <!-- Floating Ember Particles -->
+          <span class="ember-particle" style="left:10%; animation-delay:0s;"></span>
+          <span class="ember-particle" style="left:26%; animation-delay:0.5s;"></span>
+          <span class="ember-particle" style="left:44%; animation-delay:1s;"></span>
+          <span class="ember-particle" style="left:62%; animation-delay:0.2s;"></span>
+          <span class="ember-particle" style="left:80%; animation-delay:1.4s;"></span>
+          <span class="ember-particle" style="left:93%; animation-delay:0.8s;"></span>
+
+          <div class="flex items-center justify-between text-xs font-mono relative z-10">
+            <span class="flex items-center gap-1.5 text-bistro-goldLight font-medium">
+              <span class="anim-ember text-base">🔥</span> Dishes are on the clay embers
+            </span>
+            <span class="px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 font-bold text-[10px] flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span> IN PROGRESS
+            </span>
+          </div>
+          <div class="flex items-center justify-between text-[11px] font-mono text-bistro-goldLight/60 mt-1.5 relative z-10">
+            <span>Estimated pass plating:</span>
+            <span class="text-amber-400 font-bold" id="livePassCountdown">~03:42 mins</span>
+          </div>
+          <!-- Animated Master Progress Bar -->
+          <div class="w-full bg-black/60 rounded-full h-1.5 mt-2.5 overflow-hidden border border-bistro-border/30 relative z-10">
+            <div class="bg-gradient-to-r from-amber-500 via-bistro-gold to-amber-400 h-full rounded-full gold-sheen-bar" style="width: 68%"></div>
+          </div>
+        </div>
+
+        <!-- Live Active Dishes with Individual Cooking Animations -->
+        <div class="flex-1 overflow-y-auto hide-scroll space-y-2.5 my-2" id="activeKitchenDishesList">
+          <!-- Dish 1: Tandoori Oven Animation -->
+          <div class="p-3 rounded-2xl bg-bistro-surface/80 border border-bistro-border/50">
+            <div class="flex items-start justify-between">
+              <div class="flex items-start gap-2.5">
+                <span class="icon-ring"><span class="anim-ember text-sm">🔥</span></span>
+                <div>
+                  <h4 class="font-cinzel text-xs font-bold text-bistro-goldLight">1× Zafrani Paneer Mille-Feuille</h4>
+                  <div class="flex items-center gap-1.5 text-[11px] font-mono text-amber-300 mt-1">
+                    <span>In Tandoor Oven (~3m)</span>
+                  </div>
+                </div>
+              </div>
+              <span class="font-mono text-xs font-bold text-bistro-gold">₹490</span>
+            </div>
+            <div class="w-full bg-black/60 rounded-full h-1 mt-2 overflow-hidden relative">
+              <div class="bg-amber-500 h-full rounded-full" style="width: 60%"></div>
+              <div class="shimmer-sweep"></div>
+            </div>
+          </div>
+
+          <!-- Dish 2: Sautéing / Wok Animation -->
+          <div class="p-3 rounded-2xl bg-bistro-surface/80 border border-bistro-border/50">
+            <div class="flex items-start justify-between">
+              <div class="flex items-start gap-2.5">
+                <span class="icon-ring"><span class="anim-steam text-sm">🌿</span></span>
+                <div>
+                  <h4 class="font-cinzel text-xs font-bold text-bistro-goldLight">2× Karuveppilai Bay Scallops</h4>
+                  <div class="flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 mt-1">
+                    <span>Sautéing with Spices (~2m)</span>
+                  </div>
+                </div>
+              </div>
+              <span class="font-mono text-xs font-bold text-bistro-gold">₹1,520</span>
+            </div>
+            <div class="w-full bg-black/60 rounded-full h-1 mt-2 overflow-hidden relative">
+              <div class="bg-emerald-500 h-full rounded-full" style="width: 78%"></div>
+              <div class="shimmer-sweep"></div>
+            </div>
+          </div>
+
+          <!-- Dish 3: Gold Plating Twinkle Animation -->
+          <div class="p-3 rounded-2xl bg-bistro-surface/80 border border-bistro-border/50">
+            <div class="flex items-start justify-between">
+              <div class="flex items-start gap-2.5">
+                <span class="icon-ring"><span class="anim-twinkle text-sm">✨</span></span>
+                <div>
+                  <h4 class="font-cinzel text-xs font-bold text-bistro-goldLight">1× Murgh Malai Sheekh Kebab</h4>
+                  <div class="flex items-center gap-1.5 text-[11px] font-mono text-bistro-gold mt-1">
+                    <span>Plating at Pass (Finishing Garnish)</span>
+                  </div>
+                </div>
+              </div>
+              <span class="font-mono text-xs font-bold text-bistro-gold">₹540</span>
+            </div>
+            <div class="w-full bg-black/60 rounded-full h-1 mt-2 overflow-hidden relative">
+              <div class="bg-bistro-gold h-full rounded-full" style="width: 95%"></div>
+              <div class="shimmer-sweep"></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-[11px] text-center text-bistro-goldLight/60 font-light my-2">
+          You can continue adding more dishes, breads, or drinks directly from the menu anytime.
+        </p>
+
+        <!-- NO PAY BUTTON HERE! ONLY PROMINENT ADD MORE DISHES ACTION -->
+        <button onclick="closeKitchenFolioModal()" class="haptic-click w-full py-3.5 rounded-2xl bg-gradient-to-r from-bistro-gold via-[#edd097] to-bistro-gold text-bistro-void font-cinzel font-bold text-xs tracking-wider uppercase shadow-[0_0_25px_rgba(216,178,106,0.3)] flex items-center justify-center gap-2">
+          <span>+ ADD MORE DISHES / BROWSE MENU</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="billFolioModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden flex items-center justify-center p-4 max-w-md mx-auto">
+      <div class="glass-panel-elevated w-full rounded-3xl p-5 sheet-spring-up max-h-[92vh] flex flex-col relative shadow-2xl">
+        <button onclick="closeBillFolioModal()" class="haptic-click absolute right-4 top-4 w-8 h-8 rounded-full bg-bistro-surface border border-bistro-border text-bistro-gold flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+
+        <div class="text-center pb-3 border-b border-bistro-border/40">
+          <span class="text-[10px] font-mono tracking-widest text-bistro-gold uppercase font-bold">ALCOVE IV MASTER FOLIO</span>
+          <h3 class="font-cinzel text-xl font-bold text-bistro-goldLight">Table Invoice</h3>
+        </div>
+
+        <!-- SIDEWAYS TOGGLE TABS: TOTAL ORDER vs MY ORDER -->
+        <div class="grid grid-cols-2 p-1 bg-black/60 rounded-xl border border-bistro-border/60 my-3 text-xs font-mono">
+          <button onclick="setFolioTab('TOTAL')" id="tabBtnTotal" class="py-2 rounded-lg bg-bistro-gold text-bistro-void font-bold shadow transition-all">
+            TOTAL ORDER (TABLE)
+          </button>
+          <button onclick="setFolioTab('MY')" id="tabBtnMy" class="py-2 rounded-lg text-bistro-goldLight/70 hover:text-white font-medium transition-all">
+            MY ORDER (YOU)
+          </button>
+        </div>
+
+        <!-- Folio Items List -->
+        <div class="flex-1 overflow-y-auto hide-scroll space-y-2 py-1 border-b border-bistro-border/30 text-xs font-mono" id="folioItemsList">
+          <!-- Dynamically populated based on active tab -->
+        </div>
+
+        <!-- Tax & Subtotal Breakdown -->
+        <div class="py-2.5 space-y-1 text-xs font-mono border-b border-bistro-border/30 text-bistro-goldLight/70">
+          <div class="flex justify-between">
+            <span>Dishes Subtotal:</span>
+            <span class="text-bistro-goldLight font-bold" id="folioSubtotalVal">₹2,550</span>
+          </div>
+          <div class="flex justify-between text-[11px]">
+            <span>CGST (2.5%):</span>
+            <span id="folioCgstVal">₹63.75</span>
+          </div>
+          <div class="flex justify-between text-[11px]">
+            <span>SGST (2.5%):</span>
+            <span id="folioSgstVal">₹63.75</span>
+          </div>
+          <div class="flex justify-between text-sm font-bold text-bistro-gold pt-1">
+            <span id="folioGrandLabel">Cumulative Total:</span>
+            <span id="folioGrandTotal">₹2,678</span>
+          </div>
+        </div>
+
+        <!-- EQUAL SPLIT RULER: STRICTLY VISIBLE ONLY INSIDE 'TOTAL ORDER' TAB -->
+        <div id="equalSplitContainer" class="my-3 p-3 rounded-2xl bg-bistro-surface/90 border border-bistro-border/60">
+          <div class="flex items-center justify-between text-xs font-mono mb-1">
+            <span class="text-bistro-gold font-bold">EQUAL SPLIT RULER</span>
+            <span class="text-bistro-emerald font-bold" id="splitCountDisplay">2 PERSONS</span>
+          </div>
+
+          <!-- Slider Range Control (Notches 2 through 10) -->
+          <input type="range" id="splitSlider" min="2" max="10" value="2" step="1" oninput="handleSplitRulerChange(this.value)" class="w-full accent-bistro-gold cursor-pointer my-2">
+
+          <!-- Calibrated Ruler Notches: 2 3 4 5 6 7 8 9 10 -->
+          <div class="flex justify-between text-[10px] font-mono text-bistro-goldLight/50 px-1 border-t border-bistro-border/30 pt-1">
+            <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+          </div>
+
+          <div class="mt-2.5 p-2 rounded-xl bg-black/60 border border-bistro-border/40 flex items-center justify-between text-xs font-mono">
+            <span class="text-bistro-goldLight/80">Each Person Shares:</span>
+            <span class="text-base font-bold text-bistro-gold" id="perPersonShareAmount">₹1,339</span>
+          </div>
+        </div>
+
+        <!-- Request Server For Bill Button (NO SCAN TO PAY / UPI QR) -->
+        <div class="pt-2">
+          <button onclick="requestServerCheck()" class="haptic-click w-full py-3.5 rounded-2xl bg-gradient-to-r from-bistro-gold via-[#e9c788] to-bistro-gold text-bistro-void font-cinzel font-bold text-xs tracking-wider uppercase shadow-lg shadow-bistro-gold/20 flex items-center justify-center gap-2">
+            <span>🧾 REQUEST SERVER FOR CHECK / CARD</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="butlerServiceModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-end justify-center p-4 max-w-md mx-auto">
+      <div class="glass-panel-elevated w-full rounded-3xl p-5 sheet-spring-up max-h-[90vh] flex flex-col relative shadow-2xl border border-bistro-gold/50">
+        <button onclick="toggleButlerModal(false)" class="haptic-click absolute right-4 top-4 w-8 h-8 rounded-full bg-bistro-surface border border-bistro-border text-bistro-gold flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+
+        <div class="flex items-center gap-3 pb-3 border-b border-bistro-border/40">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-bistro-velvet to-bistro-surface border border-bistro-gold flex items-center justify-center text-xl shadow">
+            🛎️
+          </div>
+          <div>
+            <h3 class="font-cinzel text-lg font-bold text-bistro-goldLight">Head Butler Beacon</h3>
+            <p class="text-[11px] font-mono text-bistro-gold">Dedicated Steward: Captain Vikramaditya</p>
+          </div>
+        </div>
+
+        <!-- 4 Discrete 7-Star Requests -->
+        <div class="grid grid-cols-2 gap-2.5 my-4">
+          <!-- 1. Call Waiter -->
+          <button onclick="triggerButlerAction('Call Waiter')" class="haptic-click p-3 rounded-2xl bg-bistro-surface border border-bistro-border hover:border-bistro-gold text-left flex flex-col justify-between h-24">
+            <span class="text-xl">🤵</span>
+            <div>
+              <p class="font-cinzel text-xs font-bold text-bistro-goldLight">Call Steward</p>
+              <p class="text-[10px] text-bistro-goldLight/60 font-mono">45s Arrival Guarantee</p>
+            </div>
+          </button>
+
+          <!-- 2. Himalayan Spring Water -->
+          <button onclick="triggerButlerAction('Need Water')" class="haptic-click p-3 rounded-2xl bg-bistro-surface border border-bistro-border hover:border-bistro-gold text-left flex flex-col justify-between h-24">
+            <span class="text-xl">🧊</span>
+            <div>
+              <p class="font-cinzel text-xs font-bold text-bistro-goldLight">Himalayan Water</p>
+              <p class="text-[10px] text-bistro-goldLight/60 font-mono">Still · Sparkling · Warm</p>
+            </div>
+          </button>
+
+          <!-- 3. Fresh Silverware & Linens -->
+          <button onclick="triggerButlerAction('Need Cutlery')" class="haptic-click p-3 rounded-2xl bg-bistro-surface border border-bistro-border hover:border-bistro-gold text-left flex flex-col justify-between h-24">
+            <span class="text-xl">🍴</span>
+            <div>
+              <p class="font-cinzel text-xs font-bold text-bistro-goldLight">Fresh Silverware</p>
+              <p class="text-[10px] text-bistro-goldLight/60 font-mono">Plates, Spoons & Linens</p>
+            </div>
+          </button>
+
+          <!-- 4. Valet Car Retrieval / Bill -->
+          <button onclick="triggerButlerAction('Valet Car')" class="haptic-click p-3 rounded-2xl bg-bistro-surface border border-bistro-border hover:border-bistro-gold text-left flex flex-col justify-between h-24">
+            <span class="text-xl">🚗</span>
+            <div>
+              <p class="font-cinzel text-xs font-bold text-bistro-goldLight">Valet Retrieval</p>
+              <p class="text-[10px] text-bistro-goldLight/60 font-mono">Chauffeur Portico Stage</p>
+            </div>
+          </button>
+        </div>
+
+        <div id="butlerNotificationBanner" class="hidden p-3 rounded-2xl bg-bistro-velvet/40 border border-bistro-gold/40 text-xs font-mono text-center text-bistro-goldLight">
+          <span id="butlerNoticeText">Captain Vikram paged. Arriving at Suite IV in 00:44.</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="cartReviewModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-end justify-center max-w-md mx-auto">
+      <div class="glass-panel-elevated w-full rounded-t-3xl p-5 sheet-spring-up max-h-[90vh] flex flex-col border-t border-x border-bistro-gold/40">
+        <div class="flex items-center justify-between pb-3 border-b border-bistro-border/40">
+          <div>
+            <span class="text-[10px] font-mono text-bistro-gold uppercase font-bold tracking-widest">TRANSMIT TO KITCHEN KDS</span>
+            <h3 class="font-cinzel text-xl font-bold text-bistro-goldLight">Review Staged Flight</h3>
+          </div>
+          <button onclick="closeCartReviewSheet()" class="p-2 rounded-full bg-bistro-surface text-bistro-gold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Staged Items Review List -->
+        <div class="flex-1 overflow-y-auto hide-scroll py-3 space-y-2.5 divide-y divide-bistro-border/30" id="cartStagedList">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Sales Maximizer 4: 'Pace My Courses' Degustation Cadence Switch -->
+        <div class="p-3 rounded-2xl bg-bistro-surface/90 border border-bistro-border/60 my-2">
+          <label class="block text-[10px] font-mono text-bistro-gold uppercase font-bold tracking-wider mb-1.5">
+            🍽️ PACE MY SERVICE
+          </label>
+          <div class="grid grid-cols-2 gap-2 text-[11px] font-mono">
+            <label class="flex items-center gap-1.5 p-2 rounded-xl bg-black/50 border border-bistro-border cursor-pointer has-[:checked]:border-bistro-gold has-[:checked]:bg-bistro-gold/10">
+              <input type="radio" name="pacingMode" value="simultaneous" checked class="accent-bistro-gold">
+              <span class="text-bistro-goldLight">Serve all together</span>
+            </label>
+            <label class="flex items-center gap-1.5 p-2 rounded-xl bg-black/50 border border-bistro-border cursor-pointer has-[:checked]:border-bistro-gold has-[:checked]:bg-bistro-gold/10">
+              <input type="radio" name="pacingMode" value="courseByCourse" class="accent-bistro-gold">
+              <span class="text-bistro-goldLight">One course at a time</span>
+            </label>
+          </div>
+          <p class="text-[9px] text-bistro-goldLight/60 font-mono mt-1">
+            "One course at a time" tells the kitchen to send your mains only after starters are cleared from the table.
+          </p>
+        </div>
+
+        <div class="border-t border-bistro-border/40 pt-2.5 space-y-1 text-xs font-mono">
+          <div class="flex justify-between text-bistro-goldLight/70">
+            <span>Staging Subtotal:</span>
+            <span id="reviewStagingSubtotal">₹0</span>
+          </div>
+          <div class="flex justify-between text-sm font-bold text-bistro-gold">
+            <span>Estimated Flight Value:</span>
+            <span id="reviewStagingTotal">₹0</span>
+          </div>
+        </div>
+
+        <button onclick="dispatchStagedOrderToKitchen()" class="haptic-click w-full py-4 rounded-xl bg-gradient-to-r from-bistro-gold via-[#edd097] to-bistro-gold text-bistro-void font-cinzel font-bold text-xs tracking-wider uppercase shadow-[0_0_25px_rgba(216,178,106,0.35)] mt-3 flex items-center justify-center gap-2">
+          <span>🔥 DISPATCH FLIGHT TO CHEF LINE</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- AR MENU PREVIEW MODAL -->
+    <div id="arPreviewModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden flex items-center justify-center p-4 max-w-md mx-auto">
+      <div class="glass-panel-elevated w-full rounded-3xl p-4 sheet-spring-up max-h-[92vh] flex flex-col relative shadow-2xl border border-bistro-gold/50">
+        <button onclick="closeARModal()" class="haptic-click absolute right-4 top-4 z-10 w-8 h-8 rounded-full bg-bistro-surface border border-bistro-border text-bistro-gold flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+
+        <div class="pb-2">
+          <span class="text-[9px] font-mono tracking-widest text-bistro-gold uppercase font-bold">AUGMENTED REALITY PREVIEW</span>
+          <h3 class="font-cinzel text-lg font-bold text-bistro-goldLight" id="arModalDishName">Dish Name</h3>
+          <p class="text-[10px] text-bistro-goldLight/50 font-mono mt-0.5">Demo model shown — swap in your dish's .glb / .usdz files anytime.</p>
+        </div>
+
+        <div class="relative rounded-2xl overflow-hidden border border-bistro-gold/30 mt-2" style="height:320px;">
+          <model-viewer
+            id="arModelViewer"
+            src=""
+            ios-src=""
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            camera-controls
+            auto-rotate
+            shadow-intensity="1"
+            exposure="1"
+            style="width:100%; height:100%;">
+            <div slot="progress-bar"></div>
+            <button slot="ar-button" class="ar-launch-btn">👓 View in AR</button>
+          </model-viewer>
+        </div>
+
+        <p class="text-[10px] text-center text-bistro-goldLight/50 font-mono mt-3">
+          📱 iPhone: taps launch Quick Look (.usdz) · Android: launches Scene Viewer (.glb)
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Google model-viewer: powers the AR Menu Card (Quick Look for iOS .usdz, Scene Viewer for Android .glb) -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <script>
+    // ==========================================================
+    // AUDIO ENGINE (Synthesized Dual-Tone Glass & Singing Bowl)
+    // ==========================================================
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx && AudioContextClass) {
+        audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // High crystal wine glass clink (Sommelier upsells)
+    function playCrystalClink() {
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(2489, now); // D#7 high harmonic
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.8);
+      } catch (e) {}
+    }
+
+    // Tibetan Singing Bowl Gong (KOT dispatch & VIP beacon)
+    function playTibetanGong() {
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const freqs = [216, 432, 648];
+        freqs.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq + (idx * 2), now);
+          gain.gain.setValueAtTime(0.28 / (idx + 1), now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 1.4);
+        });
+      } catch (e) {}
+    }
+
+    // ==========================================================
+    // AMBIENT GOLD PARTICULATE CANVAS
+    // ==========================================================
+    (function initParticles() {
+      const cv = document.getElementById('ambientGoldCanvas');
+      if (!cv) return;
+      const ctx = cv.getContext('2d');
+      let w = cv.width = window.innerWidth;
+      let h = cv.height = window.innerHeight;
+
+      const particles = Array.from({ length: 36 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.6 + 0.4,
+        vy: -Math.random() * 0.35 - 0.1,
+        vx: (Math.random() - 0.5) * 0.2,
+        alpha: Math.random() * 0.5 + 0.2
+      }));
+
+      function loop() {
+        ctx.clearRect(0, 0, w, h);
+        for (let p of particles) {
+          p.y += p.vy;
+          p.x += p.vx;
+          if (p.y < 0) p.y = h;
+          if (p.x < 0) p.x = w;
+          if (p.x > w) p.x = 0;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(216, 178, 106, ${p.alpha})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(loop);
+      }
+      loop();
+      window.addEventListener('resize', () => {
+        w = cv.width = window.innerWidth;
+        h = cv.height = window.innerHeight;
+      });
+    })();
+
+    // ==========================================================
+    // AR MENU MODEL DEFAULTS
+    // Swap AR_DEMO_GLB / AR_DEMO_USDZ below (or per-dish ar.glb /
+    // ar.usdz) with your own hosted .glb & .usdz files anytime.
+    // ==========================================================
+    const AR_DEMO_GLB = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
+    const AR_DEMO_USDZ = 'https://developer.apple.com/augmented-reality/quick-look/models/biplane/toy_biplane_idle.usdz';
+
+    // ==========================================================
+    // 20 CURATED HAUTE GASTRONOMY DISHES DATA MODEL
+    // ==========================================================
+    const DISH_CATALOG = [
+      // CHAPTER I: STARTERS & SHAHI NAZRANA (4)
+      {
+        id: 'd1', chapter: 'ch1',
+        name: 'Zafrani Paneer Mille-Feuille',
+        desc: 'Delicate layered cottage cheese steeped in Kashmiri saffron, pistachio dust & char embers.',
+        price: 490, veg: true, satvik: true, glutenFree: true, keto: false,
+        pairing: { name: 'Fratelli Sette Reserve 2018', price: 420 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd2', chapter: 'ch1',
+        name: 'Melt-in-Mouth Galouti Kebab',
+        desc: 'Finely minced lamb infused with 32 Awadhi potli spices, pan-seared over pure desi ghee.',
+        price: 580, veg: false, satvik: false, glutenFree: true, keto: true,
+        pairing: { name: 'Smoked Saffron Old Fashioned', price: 440 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd3', chapter: 'ch1',
+        name: 'Karuveppilai Bay Scallops',
+        desc: 'Pan-seared coastal sea scallops tossed in roasted Byadagi chili podi & curry leaf oil.',
+        price: 760, veg: false, satvik: false, glutenFree: true, keto: true,
+        pairing: { name: 'Grover Soiree Brut Sparkling', price: 380 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd4', chapter: 'ch1',
+        name: 'Murgh Malai Sheekh Kebab',
+        desc: 'Tender chicken mince blended with processed cream cheese, green cardamom & charcoal smoked.',
+        price: 540, veg: false, satvik: false, glutenFree: true, keto: true,
+        pairing: { name: 'Cardamom Scented Gin Mist', price: 360 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+
+      // CHAPTER II: CLAY OVEN & THE BHATTHI (4)
+      {
+        id: 'd5', chapter: 'ch2',
+        name: 'Bhatthi Da Smoked Murgh',
+        desc: 'Classic bone-in half chicken charred over hot embers with degi mirch & mustard glaze.',
+        price: 520, veg: false, satvik: false, glutenFree: true, keto: true,
+        pairing: { name: 'Smoked Cumin Single Malt', price: 480 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd6', chapter: 'ch2',
+        name: '24K Tandoori Malai Broccoli',
+        desc: 'Tender broccoli florets marinated in cream cheese, yellow mustard & edible gold leaf.',
+        price: 460, veg: true, satvik: true, glutenFree: true, keto: true,
+        pairing: { name: 'Dindori Reserve Viognier', price: 390 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd7', chapter: 'ch2',
+        name: 'Jumbo Tiger Prawns Angara',
+        desc: 'Charcoal charred bay prawns infused with crushed coriander seeds and smoked garlic oil.',
+        price: 840, veg: false, satvik: false, glutenFree: true, keto: true,
+        pairing: { name: 'Coastal Kokum G&T', price: 380 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd8', chapter: 'ch2',
+        name: 'Peshawari Spiced Lamb Chops',
+        desc: 'French-trimmed prime ribs tenderized with raw papaya and cracked black pepper glaze.',
+        price: 780, veg: false, satvik: false, glutenFree: true, keto: true,
+        pairing: { name: 'Sula Rasa Cabernet Sauvignon', price: 460 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+
+      // CHAPTER III: IMPERIAL CURRIES (4)
+      {
+        id: 'd9', chapter: 'ch3',
+        name: 'Royal 24K Dal Bukhara',
+        desc: 'Black urad lentils slow simmered for 36 hours over tandoor embers with churned makhani butter.',
+        price: 480, veg: true, satvik: true, glutenFree: true, keto: false,
+        pairing: { name: 'Truffle Garlic Kulcha (+₹160)', price: 160 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd10', chapter: 'ch3',
+        name: 'Awadhi Nalli Nihari Gosht',
+        desc: 'Slow-braised lamb shanks in an aromatic marrow broth scented with vetiver and rose petals.',
+        price: 680, veg: false, satvik: false, glutenFree: true, keto: false,
+        pairing: { name: 'Smoked Saffron Old Fashioned', price: 440 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd11', chapter: 'ch3',
+        name: 'Old Delhi Velvet Butter Chicken',
+        desc: 'Pulled clay oven chicken simmered in vine tomato makhani gravy with sun-dried fenugreek leaves.',
+        price: 560, veg: false, satvik: false, glutenFree: true, keto: false,
+        pairing: { name: 'Kashmiri Roghani Naan (+₹140)', price: 140 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd12', chapter: 'ch3',
+        name: 'Satvik Truffle Malai Kofta',
+        desc: 'Paneer & lotus seed spheres simmered in silky cashew cream gravy. Zero onion, zero garlic.',
+        price: 510, veg: true, satvik: true, glutenFree: false, keto: false,
+        pairing: { name: 'Chilled Jasmine & Cardamom Mist', price: 340 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+
+      // CHAPTER IV: DUM BIRYANI & BREADS (4)
+      {
+        id: 'd13', chapter: 'ch4',
+        name: 'Dum Pukht Awadhi Biryani',
+        desc: 'Aged long-grain basmati and spring chicken sealed with whole wheat dough under slow dum heat.',
+        price: 580, veg: false, satvik: false, glutenFree: true, keto: false,
+        pairing: { name: 'Burani Garlic Raita & Salan', price: 120 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd14', chapter: 'ch4',
+        name: 'Nizami Subz Dum Biryani',
+        desc: 'Baby vegetables, mint leaves & aged basmati infused with rose ittar and crushed green cardamom.',
+        price: 490, veg: true, satvik: true, glutenFree: true, keto: false,
+        pairing: { name: 'Pomegranate Anardana Cooler', price: 290 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd15', chapter: 'ch4',
+        name: 'Charcoal Truffle Garlic Kulcha',
+        desc: 'Layered refined flour flatbread stuffed with processed cheese and brushed with French truffle ghee.',
+        price: 180, veg: true, satvik: false, glutenFree: false, keto: false,
+        pairing: { name: 'Accompaniment to Bukhara', price: 0 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd16', chapter: 'ch4',
+        name: 'Kashmiri Roghani Naan',
+        desc: 'Clay tandoor leavened bread brushed with saffron milk and toasted melon seeds.',
+        price: 150, veg: true, satvik: true, glutenFree: false, keto: false,
+        pairing: { name: 'Accompaniment to Nihari', price: 0 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+
+      // CHAPTER V: SWEET ALCHEMY & CELLAR (4)
+      {
+        id: 'd17', chapter: 'ch5',
+        name: 'Royal Shahi Tukda 24K',
+        desc: 'Crispy fried brioche soaked in saffron cardamom milk, crowned with dense malai rabri and gold leaf.',
+        price: 360, veg: true, satvik: true, glutenFree: false, keto: false,
+        pairing: { name: 'Late Harvest Chenin Blanc Dessert Wine', price: 460 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd18', chapter: 'ch5',
+        name: 'Smoked Malai Kulfi Sphere',
+        desc: 'Slow churned clotted milk ice cream scented with kewra essence, encased in dark chocolate sphere.',
+        price: 340, veg: true, satvik: true, glutenFree: true, keto: false,
+        pairing: { name: 'Espresso Bean Mist', price: 220 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd19', chapter: 'ch5',
+        name: 'Smoked Saffron Old Fashioned',
+        desc: 'Bourbon stirred with house-made saffron syrup, Angostura bitters & smoked over aged cinnamon bark.',
+        price: 520, veg: true, satvik: true, glutenFree: true, keto: true,
+        pairing: { name: 'Signatory Cellar Reserve', price: 0 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      },
+      {
+        id: 'd20', chapter: 'ch5',
+        name: 'Ratnagiri Alphonso Velvet Lassi',
+        desc: 'Thick churned fresh yogurt blended with pure Alphonso mango pulp and roasted pistachio slivers.',
+        price: 280, veg: true, satvik: true, glutenFree: true, keto: false,
+        pairing: { name: 'Non-Alcoholic Digestive', price: 0 },
+        ar: { glb: AR_DEMO_GLB, usdz: AR_DEMO_USDZ }
+      }
+    ];
+
+    // ==========================================================
+    // CART & TABLE FOLIO STATE MANAGEMENT
+    // ==========================================================
+    let stagedCart = []; // [{ dish, qty }]
+    let activeChapter = 'all';
+    let activeDiet = null; // 'satvik' | 'glutenFree' | 'keto' | null
+
+    // Placed orders tracking
+    let tableTotalOrder = [
+      { name: 'Zafrani Paneer Mille-Feuille', qty: 1, price: 490, guest: 'YOU' },
+      { name: 'Karuveppilai Bay Scallops', qty: 2, price: 760, guest: 'GUEST 2' },
+      { name: 'Murgh Malai Sheekh Kebab', qty: 1, price: 540, guest: 'YOU' }
+    ];
+
+    let currentFolioTab = 'TOTAL'; // 'TOTAL' | 'MY'
+
+    // ==========================================================
+    // RENDER DISH MATRIX WITH INLINE SOMMELIER PAIRINGS
+    // ==========================================================
+    function renderDishes() {
+      const container = document.getElementById('dishesMatrix');
+      let filtered = DISH_CATALOG.filter(d => {
+        const matchChapter = activeChapter === 'all' || d.chapter === activeChapter;
+        const matchDiet = !activeDiet || d[activeDiet] === true;
+        return matchChapter && matchDiet;
+      });
+
+      document.getElementById('dishCountLabel').textContent = `${filtered.length} DISHES SHOWN`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="glass-card rounded-3xl p-8 text-center my-6">
+            <span class="text-3xl block mb-2">🌿</span>
+            <h4 class="font-cinzel text-base font-bold text-bistro-goldLight">No Dishes in Selected Shield</h4>
+            <p class="text-xs text-bistro-goldLight/60 font-light mt-1">Please toggle another dietary filter above.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(dish => {
+        const inCart = stagedCart.find(i => i.dish.id === dish.id);
+        const qty = inCart ? inCart.qty : 0;
+
+        return `
+          <div class="glass-card rounded-3xl p-4 transition-all border border-bistro-border/70 hover:border-bistro-gold/50 shadow-md">
+            <!-- Header Badges -->
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="w-3.5 h-3.5 rounded-sm border ${dish.veg ? 'border-bistro-emerald' : 'border-bistro-flame'} flex items-center justify-center p-0.5">
+                  <span class="w-1.5 h-1.5 rounded-full ${dish.veg ? 'bg-bistro-emerald' : 'bg-bistro-flame'}"></span>
+                </span>
+                ${dish.satvik ? '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">SATVIK VERIFIED</span>' : ''}
+                ${dish.keto ? '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">KETO</span>' : ''}
+              </div>
+              <span class="font-mono text-sm font-bold text-bistro-gold">₹${dish.price}</span>
+            </div>
+
+            <!-- Title & Backstory -->
+            <h3 class="font-cinzel text-base font-bold text-bistro-goldLight leading-tight">${dish.name}</h3>
+            <p class="text-xs text-bistro-goldLight/70 font-light mt-1 leading-relaxed">${dish.desc}</p>
+
+            <!-- AR MENU CARD: View this dish in Augmented Reality -->
+            <button onclick="openARModal('${dish.id}')" class="haptic-click w-full mt-2.5 py-2 rounded-xl bg-gradient-to-r from-bistro-surface to-bistro-elevated border border-bistro-gold/50 text-bistro-gold font-mono text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 hover:bg-bistro-gold/10">
+              <span>👓</span><span>View in AR</span>
+            </button>
+
+            <!-- Bottom Add-to-Cart Stepper Action -->
+            <div class="flex items-center justify-end pt-2">
+              ${qty === 0 ? `
+                <button onclick="updateDishQty('${dish.id}', 1)" class="haptic-click px-4 py-1.5 rounded-xl bg-gradient-to-r from-bistro-surface to-bistro-elevated border border-bistro-gold text-bistro-gold font-cinzel font-bold text-xs uppercase tracking-wider hover:bg-bistro-gold hover:text-bistro-void transition-all shadow-md">
+                  + ADD TO CART
+                </button>
+              ` : `
+                <div class="flex items-center bg-bistro-elevated border border-bistro-gold rounded-xl px-2 py-0.5 text-xs">
+                  <button onclick="updateDishQty('${dish.id}', -1)" class="haptic-click text-bistro-gold px-2 py-1 font-bold text-sm">-</button>
+                  <span class="font-mono px-2 text-bistro-goldLight font-bold">${qty}</span>
+                  <button onclick="updateDishQty('${dish.id}', 1)" class="haptic-click text-bistro-gold px-2 py-1 font-bold text-sm">+</button>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==========================================================
+    // AR MENU CARD MODAL — Quick Look (.usdz) / Scene Viewer (.glb)
+    // ==========================================================
+    function openARModal(dishId) {
+      initAudio();
+      const dish = DISH_CATALOG.find(d => d.id === dishId);
+      if (!dish) return;
+
+      const viewer = document.getElementById('arModelViewer');
+      const glbSrc = (dish.ar && dish.ar.glb) || AR_DEMO_GLB;
+      const usdzSrc = (dish.ar && dish.ar.usdz) || AR_DEMO_USDZ;
+
+      viewer.setAttribute('src', glbSrc);
+      viewer.setAttribute('ios-src', usdzSrc);
+      viewer.setAttribute('alt', dish.name + ' — AR preview');
+
+      document.getElementById('arModalDishName').textContent = dish.name;
+      document.getElementById('arPreviewModal').classList.remove('hidden');
+    }
+
+    function closeARModal() {
+      document.getElementById('arPreviewModal').classList.add('hidden');
+    }
+
+    // ==========================================================
+    // CART & DEGUSTATION ACTIONS
+    // ==========================================================
+    function updateDishQty(dishId, delta) {
+      initAudio();
+      const dish = DISH_CATALOG.find(d => d.id === dishId);
+      if (!dish) return;
+
+      const idx = stagedCart.findIndex(i => i.dish.id === dishId);
+      if (idx > -1) {
+        stagedCart[idx].qty += delta;
+        if (stagedCart[idx].qty <= 0) stagedCart.splice(idx, 1);
+      } else if (delta > 0) {
+        stagedCart.push({ dish, qty: 1 });
+      }
+
+      updateStagingDock();
+      renderDishes();
+    }
+
+    function addTastingFlightToCart() {
+      playCrystalClink();
+      const flightDish = {
+        id: 'flight_degustation',
+        name: 'Royal Awadhi Grand Degustation (3-Courses)',
+        desc: 'Zafrani Paneer, 24K Dal Bukhara & Shahi Tukda 24K with Cellar Pairings',
+        price: 1420,
+        veg: true, satvik: true
+      };
+      stagedCart.push({ dish: flightDish, qty: 1 });
+      updateStagingDock();
+      openCartReviewSheet();
+    }
+
+    function updateStagingDock() {
+      const dock = document.getElementById('stagingCartDock');
+      const totalQty = stagedCart.reduce((sum, i) => sum + i.qty, 0);
+      const totalVal = stagedCart.reduce((sum, i) => sum + (i.dish.price * i.qty), 0);
+
+      if (totalQty > 0) {
+        dock.classList.remove('translate-y-48');
+        document.getElementById('cartStagingCount').textContent = `${totalQty} DISH${totalQty > 1 ? 'ES' : ''} IN STAGING`;
+        document.getElementById('cartStagingTotal').textContent = `₹${totalVal.toLocaleString()}`;
+      } else {
+        dock.classList.add('translate-y-48');
+      }
+    }
+
+    function openCartReviewSheet() {
+      const list = document.getElementById('cartStagedList');
+      const subtotal = stagedCart.reduce((sum, i) => sum + (i.dish.price * i.qty), 0);
+
+      list.innerHTML = stagedCart.map(item => `
+        <div class="py-2 flex items-center justify-between text-xs">
+          <div>
+            <h5 class="font-cinzel text-xs font-bold text-bistro-goldLight">${item.dish.name}</h5>
+            <span class="font-mono text-[11px] text-bistro-gold">₹${item.dish.price} × ${item.qty}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs font-bold text-bistro-goldLight">₹${item.dish.price * item.qty}</span>
+            <button onclick="updateDishQty('${item.dish.id}', -1); openCartReviewSheet();" class="w-6 h-6 rounded bg-bistro-surface text-bistro-gold font-bold">-</button>
+            <button onclick="updateDishQty('${item.dish.id}', 1); openCartReviewSheet();" class="w-6 h-6 rounded bg-bistro-surface text-bistro-gold font-bold">+</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('reviewStagingSubtotal').textContent = `₹${subtotal.toLocaleString()}`;
+      document.getElementById('reviewStagingTotal').textContent = `₹${subtotal.toLocaleString()}`;
+
+      document.getElementById('cartReviewModal').classList.remove('hidden');
+    }
+
+    function closeCartReviewSheet() {
+      document.getElementById('cartReviewModal').classList.add('hidden');
+    }
+
+    function dispatchStagedOrderToKitchen() {
+      if (stagedCart.length === 0) return;
+      playTibetanGong();
+
+      // Append staged items into total table order marked as 'YOU'
+      stagedCart.forEach(item => {
+        tableTotalOrder.push({
+          name: item.dish.name,
+          qty: item.qty,
+          price: item.dish.price,
+          guest: 'YOU'
+        });
+      });
+
+      // Clear staged tray
+      stagedCart = [];
+      updateStagingDock();
+      closeCartReviewSheet();
+      renderDishes();
+
+      // Update HUD count
+      document.getElementById('folioCountBadge').textContent = tableTotalOrder.length;
+      document.getElementById('ambientPillSub').textContent = `${tableTotalOrder.length} dishes in kitchen prep`;
+
+      // Launch Live Kitchen preparation telemetry
+      openKitchenFolioModal();
+    }
+
+    // ==========================================================
+    // DEDICATED BILL FOLIO & EQUAL SPLIT RULER
+    // ==========================================================
+    function openBillFolioModal() {
+      initAudio();
+      renderFolioContent();
+      document.getElementById('billFolioModal').classList.remove('hidden');
+    }
+
+    function closeBillFolioModal() {
+      document.getElementById('billFolioModal').classList.add('hidden');
+    }
+
+    function setFolioTab(tab) {
+      currentFolioTab = tab;
+      const btnTotal = document.getElementById('tabBtnTotal');
+      const btnMy = document.getElementById('tabBtnMy');
+      const splitSection = document.getElementById('equalSplitContainer');
+
+      if (tab === 'TOTAL') {
+        btnTotal.className = "py-2 rounded-lg bg-bistro-gold text-bistro-void font-bold shadow transition-all";
+        btnMy.className = "py-2 rounded-lg text-bistro-goldLight/70 hover:text-white font-medium transition-all";
+        // STRICT RULE: EQUAL SPLIT RULER IS VISIBLE ONLY INSIDE TOTAL ORDER
+        splitSection.classList.remove('hidden');
+      } else {
+        btnMy.className = "py-2 rounded-lg bg-bistro-gold text-bistro-void font-bold shadow transition-all";
+        btnTotal.className = "py-2 rounded-lg text-bistro-goldLight/70 hover:text-white font-medium transition-all";
+        // STRICT RULE: EQUAL SPLIT RULER IS COMPLETELY HIDDEN INSIDE MY ORDER
+        splitSection.classList.add('hidden');
+      }
+      renderFolioContent();
+    }
+
+    function renderFolioContent() {
+      const container = document.getElementById('folioItemsList');
+      const items = currentFolioTab === 'TOTAL' 
+        ? tableTotalOrder 
+        : tableTotalOrder.filter(i => i.guest === 'YOU');
+
+      if (items.length === 0) {
+        container.innerHTML = `<div class="text-center py-4 text-bistro-goldLight/60">No dishes recorded under your name.</div>`;
+      } else {
+        container.innerHTML = items.map(item => `
+          <div class="py-1.5 flex items-center justify-between">
+            <div>
+              <span class="text-bistro-goldLight">${item.qty}× ${item.name}</span>
+              ${currentFolioTab === 'TOTAL' ? `<span class="text-[9px] px-1 py-0.2 rounded bg-bistro-surface border border-bistro-border text-bistro-gold ml-1.5">${item.guest}</span>` : ''}
+            </div>
+            <span class="text-bistro-gold font-bold">₹${(item.price * item.qty).toLocaleString()}</span>
+          </div>
+        `).join('');
+      }
+
+      const subtotal = items.reduce((sum, i) => sum + (i.price * i.qty), 0);
+      const cgst = subtotal * 0.025;
+      const sgst = subtotal * 0.025;
+      const grandTotal = Math.round(subtotal + cgst + sgst);
+
+      document.getElementById('folioSubtotalVal').textContent = `₹${subtotal.toLocaleString()}`;
+      document.getElementById('folioCgstVal').textContent = `₹${cgst.toFixed(2)}`;
+      document.getElementById('folioSgstVal').textContent = `₹${sgst.toFixed(2)}`;
+      document.getElementById('folioGrandTotal').textContent = `₹${grandTotal.toLocaleString()}`;
+
+      // Update Split ruler based on current total
+      handleSplitRulerChange(document.getElementById('splitSlider').value);
+    }
+
+    function handleSplitRulerChange(persons) {
+      persons = parseInt(persons);
+      document.getElementById('splitCountDisplay').textContent = `${persons} PERSONS`;
+
+      // Calculate total table grand total
+      const tableSub = tableTotalOrder.reduce((sum, i) => sum + (i.price * i.qty), 0);
+      const grandTotal = Math.round(tableSub * 1.05);
+
+      const perPerson = Math.ceil(grandTotal / persons);
+      document.getElementById('perPersonShareAmount').textContent = `₹${perPerson.toLocaleString()}`;
+    }
+
+    function requestServerCheck() {
+      playTibetanGong();
+      alert('Captain Vikram paged for Final Settlement. Bringing the wireless card terminal and master portfolio to Alcove Suite IV.');
+      closeBillFolioModal();
+    }
+
+    // ==========================================================
+    // KITCHEN PREPARATION MODAL & BUTLER BEACON
+    // ==========================================================
+    function openKitchenFolioModal() {
+      initAudio();
+      document.getElementById('kitchenStatusModal').classList.remove('hidden');
+    }
+
+    function closeKitchenFolioModal() {
+      document.getElementById('kitchenStatusModal').classList.add('hidden');
+    }
+
+    function toggleButlerModal(show) {
+      initAudio();
+      document.getElementById('butlerServiceModal').classList.toggle('hidden', !show);
+      document.getElementById('butlerNotificationBanner').classList.add('hidden');
+    }
+
+    function triggerButlerAction(action) {
+      playTibetanGong();
+      const banner = document.getElementById('butlerNotificationBanner');
+      const text = document.getElementById('butlerNoticeText');
+      banner.classList.remove('hidden');
+
+      if (action === 'Call Waiter') {
+        text.textContent = 'Captain Vikramaditya dispatched to Alcove Suite IV. Estimated arrival: 00:38.';
+      } else if (action === 'Need Water') {
+        text.textContent = 'Himalayan Spring Water service alerted. Steward is arriving with crystal decanter.';
+      } else if (action === 'Need Cutlery') {
+        text.textContent = 'Silverware and warm linen napkins are being fetched for your table.';
+      } else if (action === 'Valet Car') {
+        text.textContent = 'Chauffeur token #B-18 requested. Your vehicle is staging at the main portico.';
+      }
+    }
+
+    function toggleDietShield(dietType) {
+      initAudio();
+      const btnSatvik = document.getElementById('shieldBtnSatvik');
+      const btnGluten = document.getElementById('shieldBtnGluten');
+      const btnKeto = document.getElementById('shieldBtnKeto');
+
+      if (activeDiet === dietType) {
+        activeDiet = null;
+      } else {
+        activeDiet = dietType;
+      }
+
+      // Update button styling
+      [btnSatvik, btnGluten, btnKeto].forEach(btn => {
+        btn.className = "haptic-click px-2.5 py-1 rounded-full text-[10px] font-mono border border-bistro-border bg-bistro-surface text-bistro-goldLight/70 flex items-center gap-1 shrink-0 transition-all";
+      });
+
+      if (activeDiet === 'satvik') {
+        btnSatvik.className = "haptic-click px-2.5 py-1 rounded-full text-[10px] font-mono border border-emerald-500 bg-emerald-500/20 text-emerald-300 font-bold flex items-center gap-1 shrink-0 transition-all shadow";
+      } else if (activeDiet === 'glutenFree') {
+        btnGluten.className = "haptic-click px-2.5 py-1 rounded-full text-[10px] font-mono border border-bistro-gold bg-bistro-gold/20 text-bistro-gold font-bold flex items-center gap-1 shrink-0 transition-all shadow";
+      } else if (activeDiet === 'keto') {
+        btnKeto.className = "haptic-click px-2.5 py-1 rounded-full text-[10px] font-mono border border-amber-500 bg-amber-500/20 text-amber-300 font-bold flex items-center gap-1 shrink-0 transition-all shadow";
+      }
+
+      renderDishes();
+    }
+
+    function filterChapter(chap) {
+      activeChapter = chap;
+      document.querySelectorAll('.chapter-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-bistro-gold', 'text-bistro-void');
+        btn.classList.add('bg-bistro-surface', 'border', 'border-bistro-border', 'text-bistro-goldLight/80');
+      });
+      event.target.classList.add('active', 'bg-bistro-gold', 'text-bistro-void');
+      event.target.classList.remove('bg-bistro-surface', 'border', 'border-bistro-border', 'text-bistro-goldLight/80');
+      renderDishes();
+    }
+
+    // Initialize on DOM load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderDishes();
+      handleSplitRulerChange(2);
+    });
+  </script>
+</body>
+</html>
